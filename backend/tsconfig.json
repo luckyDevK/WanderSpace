@@ -4,9 +4,10 @@
     "outDir": "dist",
     "rootDir": "src",
     "lib": ["ES2020"],
-    "emitDeclarationOnly": false
-  },
+    "emitDeclarationOnly": false,
 
-  "exclude": ["./src/types"],
-  "include": ["src"]
+    "typeRoots": ["./src/types"] // this is fine
+  },
+  "include": ["src", "src/types"], // make sure it's included
+  "exclude": [] // don't exclude the types folder
 }

@@ -58,7 +58,7 @@ export const createPlace = async (
 };
 
 export const updatePlace = async (
-  req: Request<{ id: string }>,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {

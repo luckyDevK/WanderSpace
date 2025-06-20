@@ -1,8 +1,10 @@
-import { model, Schema } from 'mongoose';
+import { Document, model, Schema } from 'mongoose';
 
 import { IUser } from '../types/auth';
 
-const userSchema = new Schema<IUser>({
+type IUserDoc = IUser & Document;
+
+const userSchema = new Schema<IUserDoc>({
   username: { type: String, required: true, unique: true, minlength: 4 },
   email: { type: String, required: true },
   password: { type: String, required: true },

@@ -17,4 +17,4 @@ export interface AuthRequest extends Request {
   userId?: string;
 }
 
-export type IUser = Omit<IAuth, 'identifier' | 'confirmPw'> & Document;
+export type IUser = Omit<IAuth, 'identifier' | 'confirmPw'>;
