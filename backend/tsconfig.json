@@ -3,8 +3,10 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "lib": ["ES2020"]
+    "lib": ["ES2020"],
+    "emitDeclarationOnly": false
   },
 
+  "exclude": ["./src/types"],
   "include": ["src"]
 }

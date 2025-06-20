@@ -87,14 +87,17 @@ export const editPlaceValidator: ValidationChain[] = [
   body('imageUrl')
     .optional()
     .custom((url) => {
-      const isValidUrl = /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(url);
+      const isValidUrl = /^https?:\/\/.+$/i.test(url);
+
       const isBase64Image =
         /^data:image\/(png|jpeg|jpg|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(
           url,
         );
+
       if (!isValidUrl && !isBase64Image) {
         throw new Error('Image must be a valid image URL or base64 string');
       }
+
       return true;
     }),
 

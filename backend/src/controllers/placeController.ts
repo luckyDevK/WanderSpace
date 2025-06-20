@@ -14,8 +14,6 @@ import { seedBeautifulPlaces } from '../seed/seedBeautifulPlaces';
 import Place from '../models/place';
 import { AuthRequest } from '../types/auth';
 
-type IPlaceDoc = IPlace & Document;
-
 export const getPlaces = async (
   req: Request,
   res: Response,
@@ -66,7 +64,10 @@ export const updatePlace = async (
 ): Promise<void> => {
   const updates = matchedData(req) as UpdatePlaceInput;
 
-  const updated = await Place.findByIdAndUpdate(req.params.id, updates, {
+  console.log(req.params.id);
+  const id = decodeURIComponent(req.params.id);
+
+  const updated = await Place.findByIdAndUpdate(id, updates, {
     new: true,
     runValidators: true,
   }).select('-__v -updatedAt');
@@ -88,7 +89,7 @@ export const deletePlace = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const placeId = req.params.id;
+  const placeId = decodeURIComponent(req.params.id);
 
   const deleted = await Place.findByIdAndDelete(placeId);
 
@@ -103,9 +104,9 @@ export const deletePlace = async (
 
 export const searchPlaces = async (
   req: Request<{}, {}, {}, { q?: string }>,
-  res: Response<IPlace>,
+  res: Response,
   next: NextFunction,
-) => {
+): Promise<void> => {
   const query = req.query.q?.trim() || '';
 
   const results = await Place.find({
@@ -117,12 +118,6 @@ export const searchPlaces = async (
     ],
   }).select('-__v -updatedAt');
 
-  return res.json(results);
+  res.json(results);
+  return;
 };
-
-//  title: { type: String, required: true, trim: true, minlength: 3 },
-//     description: { type: String, required: true, minlength: 10, trim: true },
-//     imageUrl: { type: String, required: true },
-//     location: { type: String, required: true },
-//     category: { type: String, required: true, enum: [...categories] },
-//     createdBy: { type: Schema.ObjectId, ref: 'User', required: true },
