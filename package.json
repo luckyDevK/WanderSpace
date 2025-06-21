@@ -17,5 +17,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "format": "prettier --write ."
+  },
+  "dependencies": {
+    "react-router-dom": "^7.6.2"
   }
 }
