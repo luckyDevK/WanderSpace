@@ -15,16 +15,29 @@ import Place from '../models/place';
 import { AuthRequest } from '../types/auth';
 
 export const getPlaces = async (
-  req: Request,
+  req: Request<{}, {}, {}, { page: number; limit: number }>,
   res: Response,
   next: NextFunction,
-): Promise<any> => {
-  const updatedPlaces = await Place.find().select('-__v  -updatedAt');
+): Promise<void> => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 12;
+  const skip = (page - 1) * limit;
 
-  return res.status(200).json({
+  const total = await Place.countDocuments();
+
+  const updatedPlaces = await Place.find()
+    .select('-__v  -updatedAt')
+    .skip(skip)
+    .limit(limit);
+
+  res.status(200).json({
     message: 'success',
     places: updatedPlaces,
+    total,
+    limit,
+    totalPages: Math.ceil(total / limit),
   });
+  return;
 };
 
 export const createPlace = async (
@@ -45,9 +58,11 @@ export const createPlace = async (
     createdBy: req.userId,
   });
 
-  const { __v, updatedAt, ...newPlace } = place.toObject();
+  const populatedPlace = await Place.findById(place._id)
+    .select('-__v -updatedAt')
+    .populate('createdBy', 'username');
 
-  return res.status(201).json({ message: 'success', places: newPlace });
+  return res.status(201).json({ message: 'success', places: populatedPlace });
 };
 
 export const updatePlace = async (

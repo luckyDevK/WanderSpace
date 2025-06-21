@@ -18,10 +18,14 @@ export function DialogGallery({ children, place }: DialogProps) {
         <ImageMeta
           category={place.category}
           createdBy={place.createdBy}
-          location={place.createdBy}
+          location={place.location}
         />
         <ImagePreview imageUrl={place.imageUrl} title={place.title} />
-        <ImageFooter description={place.description} title={place.title} />
+        <ImageFooter
+          description={place.description}
+          title={place.title}
+          imageUrl={place.imageUrl}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -3,9 +3,15 @@ import type { IImage } from '@/types/ImageType';
 import { Button } from '@/components/ui/button';
 import { Download, Share2 } from 'lucide-react';
 
-type ImageFooterProps = Pick<IImage, 'title' | 'description'>;
+import { downloadImg } from '@/lib/utils';
 
-export default function ImageFooter({ title, description }: ImageFooterProps) {
+type ImageFooterProps = Pick<IImage, 'title' | 'description' | 'imageUrl'>;
+
+export default function ImageFooter({
+  title,
+  description,
+  imageUrl,
+}: ImageFooterProps) {
   return (
     <div className="mt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
@@ -16,11 +22,14 @@ export default function ImageFooter({ title, description }: ImageFooterProps) {
       </div>
 
       <div className="flex gap-3">
-        <Button className="bg-emerald-500 text-white hover:bg-emerald-500/80 transition-colors duration-200 ease-in cursor-pointer">
+        <Button
+          onClick={() => downloadImg(imageUrl, `${title}.jpg`)}
+          className="bg-emerald-500 text-white hover:bg-emerald-500/80 transition-colors duration-200 ease-in cursor-pointer"
+        >
           <Download />
           Download
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="cursor-pointer">
           Share
           <Share2 />
         </Button>

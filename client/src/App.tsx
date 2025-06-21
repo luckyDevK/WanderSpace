@@ -5,18 +5,22 @@ import Home from './pages/Home';
 import PlaceContextProvider from './context/PlaceContext';
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { staleTime: 1000 * 60 * 5, gcTime: 1000 * 60 * 10 },
+    },
+  });
 
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <PlaceContextProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <PlaceContextProvider>
             <Routes>
               <Route path="/" element={<Home />} />
             </Routes>
-          </BrowserRouter>
-        </PlaceContextProvider>
+          </PlaceContextProvider>
+        </BrowserRouter>
       </QueryClientProvider>
     </>
   );

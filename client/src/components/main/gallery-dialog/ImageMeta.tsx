@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import type { IImage } from '@/types/ImageType';
 import { Avatar, AvatarImage, AvatarFallback } from '../../ui/avatar';
 
@@ -10,14 +8,6 @@ export default function ImageMeta({
   createdBy,
   location,
 }: ImageMeta) {
-  const imgRef = useRef<HTMLImageElement | null>(null);
-
-  const handleFullScreen = () => {
-    if (!imgRef.current?.requestFullscreen) {
-      imgRef.current?.requestFullscreen();
-    }
-    console.log('sas');
-  };
   return (
     <div className="flex justify-between mb-4 text-sm text-muted-foreground">
       <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -31,11 +21,7 @@ export default function ImageMeta({
 
       <p className="flex items-center gap-2 font-semibold text-foreground">
         <Avatar>
-          <AvatarImage
-            onClick={handleFullScreen}
-            src="https://github.com/shadcn.png"
-            alt="@shadcn"
-          />
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>{' '}
         {createdBy}

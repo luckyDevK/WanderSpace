@@ -20,8 +20,8 @@ const run = async () => {
     console.log('✅ Connected to MongoDB');
 
     // 🔁 Seeding logic goes here
-    const userId = await seedDefaultUser();
-    await seedBeautifulPlaces(userId);
+    const user = await seedDefaultUser();
+    await seedBeautifulPlaces({ userId: user.userId, username: user.username });
     console.log('🌱 Seed completed');
 
     // Start the app after DB + seeding

@@ -4,7 +4,18 @@ import Place from '../models/place';
 
 import { IPlace } from '../types/place';
 
-export async function seedBeautifulPlaces(userId: Types.ObjectId) {
+interface ISeederPlaces {
+  userId: Types.ObjectId;
+  username: string;
+}
+
+export async function seedBeautifulPlaces({ userId, username }: ISeederPlaces) {
+  const existingPlaces = await Place.countDocuments();
+  if (existingPlaces > 0) {
+    console.log('🌍 Places already seeded. Skipping...');
+    return;
+  }
+
   const defaultPlaces: IPlace[] = [
     {
       title: 'Raja Ampat',
@@ -13,7 +24,10 @@ export async function seedBeautifulPlaces(userId: Types.ObjectId) {
         'https://images.unsplash.com/photo-1703769605314-18648cfc3428?q=80&w=1485&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       location: 'West Papua',
       category: 'Island',
-      createdBy: userId,
+      createdBy: {
+        _id: userId,
+        username,
+      },
     },
     {
       title: 'Borobudur Temple',
