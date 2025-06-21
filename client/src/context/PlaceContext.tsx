@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import type { IImage } from '@/types/ImageType';
@@ -19,21 +19,23 @@ export const usePlace = () => {
   return context;
 };
 
-function ss(params: type) {}
-
 export default function PlaceContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { data: places } = useQuery({
+  const { data: places = [], isLoading } = useQuery({
     queryKey: ['place'],
     queryFn: getPlaces,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
   });
+
+  console.log(places);
 
   const placesCtxValues = {
     places,
-    isLoading: false,
+    isLoading,
   };
 
   return <PlaceContext value={placesCtxValues}>{children}</PlaceContext>;

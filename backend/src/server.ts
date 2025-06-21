@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import app from './app.js'; // ✅ must include `.js` if using `"type": "module"`
+import { seedDefaultUser } from './seed/defaultUser.js'; // adjust paths as needed
+import { seedBeautifulPlaces } from './seed/seedBeautifulPlaces.js';
 
 dotenv.config();
 
@@ -12,15 +14,24 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-mongoose
-  .connect(MONGO_URI)
-  .then(() => {
+const run = async () => {
+  try {
+    await mongoose.connect(MONGO_URI);
     console.log('✅ Connected to MongoDB');
+
+    // 🔁 Seeding logic goes here
+    const userId = await seedDefaultUser();
+    await seedBeautifulPlaces(userId);
+    console.log('🌱 Seed completed');
+
+    // Start the app after DB + seeding
     app.listen(PORT, () => {
       console.log(`🚀 Server listening at http://localhost:${PORT}`);
     });
-  })
-  .catch((err) => {
-    console.error('❌ DB connection failed:', err);
+  } catch (err) {
+    console.error('❌ Initialization failed:', err);
     process.exit(1);
-  });
+  }
+};
+
+run();

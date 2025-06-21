@@ -1,3 +1,4 @@
+import { DialogTitle } from '@radix-ui/react-dialog';
 import type { IImage } from '@/types/ImageType';
 import { Button } from '@/components/ui/button';
 import { Download, Share2 } from 'lucide-react';
@@ -8,7 +9,9 @@ export default function ImageFooter({ title, description }: ImageFooterProps) {
   return (
     <div className="mt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+        <DialogTitle className="text-2xl font-bold text-foreground">
+          {title}
+        </DialogTitle>
         <p className="text-muted-foreground mt-1 text-balance">{description}</p>
       </div>
 

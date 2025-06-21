@@ -19,18 +19,11 @@ export const getPlaces = async (
   res: Response,
   next: NextFunction,
 ): Promise<any> => {
-  const places = await Place.find();
-
-  if (places.length === 0) {
-    const userId = await seedDefaultUser();
-    await seedBeautifulPlaces(userId);
-  }
-
   const updatedPlaces = await Place.find().select('-__v  -updatedAt');
 
   return res.status(200).json({
     message: 'success',
-    place: updatedPlaces,
+    places: updatedPlaces,
   });
 };
 
@@ -54,7 +47,7 @@ export const createPlace = async (
 
   const { __v, updatedAt, ...newPlace } = place.toObject();
 
-  return res.status(201).json({ message: 'success', place: newPlace });
+  return res.status(201).json({ message: 'success', places: newPlace });
 };
 
 export const updatePlace = async (
@@ -79,7 +72,7 @@ export const updatePlace = async (
 
   res.status(200).json({
     message: 'success',
-    place: updated,
+    places: updated,
   });
   return;
 };

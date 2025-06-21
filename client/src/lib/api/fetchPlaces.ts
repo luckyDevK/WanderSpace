@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-export async function getPlaces() {
+import type { IImage } from '@/types/ImageType';
+
+export async function getPlaces(): Promise<IImage[]> {
   const res = await axios.get('http://localhost:5000/place/');
 
-  return res.data;
+  console.log(res.data.places);
+  return res.data.places;
 }

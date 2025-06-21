@@ -12,15 +12,17 @@ interface DialogProps {
 export function DialogGallery({ children, place }: DialogProps) {
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <ImageMeta
-        category={place.category}
-        createdBy={place.createdBy}
-        location={place.createdBy}
-      />
-      <ImagePreview imageUrl={place.imageUrl} title={place.title} />
-      <ImageFooter description={place.description} title={place.title} />
-      <DialogContent className="max-w-6xl w-full bg-white p-6 rounded-xl [&>button]:hidden"></DialogContent>
+      <DialogTrigger>{children}</DialogTrigger>
+
+      <DialogContent className="max-w-6xl w-full bg-white p-6 rounded-xl [&>button]:hidden">
+        <ImageMeta
+          category={place.category}
+          createdBy={place.createdBy}
+          location={place.createdBy}
+        />
+        <ImagePreview imageUrl={place.imageUrl} title={place.title} />
+        <ImageFooter description={place.description} title={place.title} />
+      </DialogContent>
     </Dialog>
   );
 }
