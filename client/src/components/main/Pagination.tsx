@@ -43,7 +43,11 @@ export default function PaginationTabs() {
               (page >= currentPage - 1 && page <= currentPage + 1)
             ) {
               return (
-                <PaginationItem onClick={() => handleNavigate(page)} key={page}>
+                <PaginationItem
+                  aria-label={`page-${page}`}
+                  onClick={() => handleNavigate(page)}
+                  key={page}
+                >
                   <PaginationLink
                     href={`#${page}`}
                     isActive={page === currentPage}

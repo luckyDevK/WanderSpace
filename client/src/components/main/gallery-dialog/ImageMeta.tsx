@@ -9,8 +9,8 @@ export default function ImageMeta({
   location,
 }: ImageMeta) {
   return (
-    <div className="flex justify-between mb-4 text-sm text-muted-foreground">
-      <div className="flex flex-wrap items-center gap-2 text-sm">
+    <div className="flex flex-wrap gap-y-5 justify-between mb-4 text-sm text-muted-foreground ">
+      <div className="flex flex-wrap items-center gap-4 text-sm">
         <span className="bg-muted px-3 py-1 rounded-full text-foreground/80">
           🏷️ <span className="font-medium">{category}</span>
         </span>
@@ -24,7 +24,7 @@ export default function ImageMeta({
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>{' '}
-        {createdBy}
+        {!createdBy.username ? 'sakon' : createdBy.username}
       </p>
     </div>
   );

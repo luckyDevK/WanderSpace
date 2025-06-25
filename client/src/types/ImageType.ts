@@ -7,6 +7,9 @@ export interface IImage {
   imageUrl: string;
   location: string;
   category: CategoryType;
-  createdBy: string;
+  createdBy: {
+    userId: string;
+    username: string;
+  };
   createdAt: Date;
 }

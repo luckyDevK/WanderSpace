@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { useRef, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { PlaceContext } from './usePlaceContext';
 import { getPlaces, searchPlace } from '../lib/api/fetchPlaces';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 export default function PlaceContextProvider({
   children,
@@ -11,13 +11,16 @@ export default function PlaceContextProvider({
   children: React.ReactNode;
 }) {
   const [page, setPage] = useState(1);
+  const [auth, setAuth] = useState('';)
   const [searchParams, setSearchParams] = useSearchParams({ q: '' });
 
   const q = searchParams.get('q') || '';
+  const lastChange = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: paginatedData, isLoading: isPaginatedLoading } = useQuery({
     queryKey: ['places', page],
     queryFn: () => getPlaces(limit, page),
+    enabled: q === '',
   });
 
   const { data: searchedData, isPending: isSearchLoading } = useQuery({
@@ -25,10 +28,6 @@ export default function PlaceContextProvider({
     queryFn: () => searchPlace(q),
     enabled: q !== '',
   });
-
-  useEffect(() => {
-    console.log(searchedData);
-  }, [searchedData]);
 
   const limit = 12;
   const places = q ? searchedData || [] : paginatedData?.places || [];
@@ -57,22 +56,40 @@ export default function PlaceContextProvider({
   }
 
   function handleSearch(value: string) {
-    setSearchParams((searchParams) => {
-      searchParams.set('q', value);
-      return searchParams;
-    });
+    if (lastChange.current) {
+      clearTimeout(lastChange.current);
+    }
+
+    lastChange.current = setTimeout(() => {
+      lastChange.current = null;
+      setSearchParams((searchParams) => {
+        searchParams.set('q', value);
+        return searchParams;
+      });
+    }, 500);
   }
 
-  const placesCtxValues = {
-    places,
-    totalPages,
-    isLoading,
-    page,
-    handleNavigate,
-    handlePrevious,
-    handleNext,
-    handleSearch,
-  };
+  const goToSignUp = () => {
+    setAuth('signup')
+  }
+
+  const goToSignIn = () => {
+    setAuth('signin')
+  }
+
+  const placesCtxValues = useMemo(
+    () => ({
+      places,
+      totalPages,
+      isLoading,
+      page,
+      handleNavigate,
+      handlePrevious,
+      handleNext,
+      handleSearch,
+    }),
+    [places, totalPages, isLoading, page],
+  );
 
   return <PlaceContext value={placesCtxValues}>{children}</PlaceContext>;
 }

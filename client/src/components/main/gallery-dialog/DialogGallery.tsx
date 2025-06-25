@@ -12,9 +12,9 @@ interface DialogProps {
 export function DialogGallery({ children, place }: DialogProps) {
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogContent className="max-w-6xl w-full bg-white p-6 rounded-xl [&>button]:hidden">
+      <DialogContent className="max-w-xl w-[90%] bg-white p-6 rounded-xl [&>button]:hidden">
         <ImageMeta
           category={place.category}
           createdBy={place.createdBy}

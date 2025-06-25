@@ -1,6 +1,3 @@
-// categories.ts
-
-// 👇 Define array with `as const` to keep literal values
 export const categories = [
   'Waterfall',
   'Beach',
@@ -24,5 +21,4 @@ export const categories = [
   'Hot Spring',
 ] as const;
 
-// 👇 Create union type from the array
 export type CategoryType = (typeof categories)[number];

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 import {
   DropdownMenu,
@@ -21,8 +22,10 @@ export default function Navigation() {
 
       {/* Right-side auth buttons */}
       <div className="hidden md:flex gap-4">
-        <Button variant="outline">Sign In</Button>
-        <Button>Sign Up</Button>
+        <Button variant="outline" className="cursor-pointer">
+          Sign In
+        </Button>
+        <Button className="cursor-pointer">Sign Up</Button>
       </div>
 
       <div className="md:hidden ">

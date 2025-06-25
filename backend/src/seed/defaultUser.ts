@@ -1,35 +1,24 @@
 // seed/defaultUser.ts
+import User from '../models/user'; // your user model
 import bcrypt from 'bcrypt';
-import User from '../models/user';
+
 import { Types } from 'mongoose';
 
-export interface IDefaultUser {
-  userId: Types.ObjectId;
-  username: string;
-}
+export async function seedDefaultUser(): Promise<Types.ObjectId> {
+  const existingUser = await User.findOne({ username: 'very289' });
 
-export async function seedDefaultUser(): Promise<IDefaultUser> {
-  const existing = await User.findOne({ email: 'verylucky@example.com' });
-
-  const hashedPassword = await bcrypt.hash('harimau229', 12);
-
-  const user = await User.create({
-    username: 'very289',
-    email: 'verylucky@example.com',
-    password: hashedPassword,
-  });
-
-  if (existing) {
-    console.log('✅ Default user already exists');
-    return {
-      userId: user._id as Types.ObjectId,
-      username: user.username,
-    };
+  if (existingUser) {
+    console.log('👤 Default user already exists. Skipping...');
+    return existingUser._id;
   }
 
-  console.log('🌱 Default user created');
-  return {
-    userId: user._id as Types.ObjectId,
-    username: user.username,
-  };
+  const password = await bcrypt.hash('your-password', 10);
+  const newUser = await User.create({
+    username: 'very289',
+    email: 'very@example.com',
+    password,
+  });
+
+  console.log('👤 Default user created');
+  return newUser._id;
 }
