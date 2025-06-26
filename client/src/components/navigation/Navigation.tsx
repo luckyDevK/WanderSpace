@@ -17,15 +17,15 @@ export default function Navigation() {
     <nav className="px-4 md:container mx-auto flex items-center justify-between ">
       <h1 className="capitalize text-2xl font-bold">wander space</h1>
 
-      {/* Left navigation links */}
       <NavigationMenuWithActiveItem />
 
-      {/* Right-side auth buttons */}
       <div className="hidden md:flex gap-4">
         <Button variant="outline" className="cursor-pointer">
-          Sign In
+          <Link to="/signin">Sign In</Link>
         </Button>
-        <Button className="cursor-pointer">Sign Up</Button>
+        <Button className="cursor-pointer">
+          <Link to="/signup">Sign Up</Link>
+        </Button>
       </div>
 
       <div className="md:hidden ">

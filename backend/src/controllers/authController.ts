@@ -30,7 +30,6 @@ export const registerController = async (
   res.status(201).json({
     success: true,
     message: 'User registered successfully',
-    user: userWithoutPassword,
   });
   return;
 };
@@ -68,11 +67,7 @@ export const signinController = async (
   res.json({
     message: 'success',
     token,
-    user: {
-      id: user?._id,
-      user: user?.username,
-      email: user?.email,
-    },
+    username: user?.username,
   });
   return;
 };

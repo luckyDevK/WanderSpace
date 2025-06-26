@@ -11,7 +11,7 @@ export default function PlaceContextProvider({
   children: React.ReactNode;
 }) {
   const [page, setPage] = useState(1);
-  const [auth, setAuth] = useState('';)
+
   const [searchParams, setSearchParams] = useSearchParams({ q: '' });
 
   const q = searchParams.get('q') || '';
@@ -67,14 +67,6 @@ export default function PlaceContextProvider({
         return searchParams;
       });
     }, 500);
-  }
-
-  const goToSignUp = () => {
-    setAuth('signup')
-  }
-
-  const goToSignIn = () => {
-    setAuth('signin')
   }
 
   const placesCtxValues = useMemo(

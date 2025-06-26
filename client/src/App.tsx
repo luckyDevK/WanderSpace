@@ -2,7 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import Home from './pages/Home';
-import PlaceContextProvider from './context/PlaceContext';
+import PlaceContextProvider from './context/PlaceProvider';
+import AuthContextProvider from './context/AuthProvider';
+import RootLayout from './components/RootLayout';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import Admin from './pages/Admin';
 
 function App() {
   const queryClient = new QueryClient({
@@ -16,9 +21,16 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <PlaceContextProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-            </Routes>
+            <AuthContextProvider>
+              <Routes>
+                <Route path="/" element={<RootLayout />}>
+                  <Route index element={<Home />} />
+                  <Route path="/admin" element={<Admin />} />
+                </Route>
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+              </Routes>
+            </AuthContextProvider>
           </PlaceContextProvider>
         </BrowserRouter>
       </QueryClientProvider>

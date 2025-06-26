@@ -8,9 +8,10 @@
     },
     "types": ["@testing-library/jest-dom", "vitest"],
     "moduleResolution": "bundler",
-
     "verbatimModuleSyntax": true,
+    "strict": true,
     "noEmit": true,
+
     "lib": ["DOM", "DOM.Iterable", "ES2020"]
   },
   "include": ["src", "tests"]
