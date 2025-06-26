@@ -7,15 +7,17 @@ import AuthContextProvider from './context/AuthProvider';
 import RootLayout from './components/RootLayout';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Admin from './pages/Admin';
+import DashboardPage from './pages/DashboardPage';
+import PageNotFound from './pages/PageNoutFound';
+import ProtectedRoute from './pages/ProtectedRoute';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 1000 * 60 * 5, gcTime: 1000 * 60 * 10 },
+  },
+});
 
 function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { staleTime: 1000 * 60 * 5, gcTime: 1000 * 60 * 10 },
-    },
-  });
-
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -25,10 +27,13 @@ function App() {
               <Routes>
                 <Route path="/" element={<RootLayout />}>
                   <Route index element={<Home />} />
-                  <Route path="/admin" element={<Admin />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="dashboard" element={<DashboardPage />} />
+                  </Route>
                 </Route>
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="*" element={<PageNotFound />} />
               </Routes>
             </AuthContextProvider>
           </PlaceContextProvider>

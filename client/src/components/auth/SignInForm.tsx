@@ -1,5 +1,6 @@
-import * as z from 'zod/v4';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod/v4';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,27 +13,26 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SignInSchema } from '@/schema/schema';
+
+import ErrorMsg from './ErrorMsg';
 
 import { useAuth } from '@/context/useAuth';
 import TogglePw from './TogglePw';
 
-interface IFormInputSignup {
-  identifier: string;
-  password: string;
-}
+type SignInForm = z.infer<typeof SignInSchema>;
 
 export default function SignInForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInForm>({ resolver: zodResolver(SignInSchema) });
 
-    const formData = new FormData(e.target as HTMLFormElement);
-
-    const identifier = formData.get('identifier');
-    const password = formData.get('');
-  }
+  const { handleSignIn } = useAuth();
 
   return (
     <div className={cn(' flex flex-col gap-6', className)} {...props}>
@@ -44,22 +44,32 @@ export default function SignInForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit((data) => handleSignIn(data))}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="identifier">Email / Username</Label>
                 <Input
-                  minLength={3}
+                  id="identifier"
+                  {...register('identifier')}
                   type="text"
                   placeholder="mo@gmail.com / johnDoe12"
-                  required
                 />
+                {errors.identifier?.message && (
+                  <ErrorMsg msg={errors.identifier?.message} />
+                )}
               </div>
               <div className="grid gap-3">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <TogglePw />
+                <TogglePw
+                  id="password"
+                  placeholder="type your password"
+                  {...register('password')}
+                />
+                {errors.password?.message && (
+                  <ErrorMsg msg={errors.password?.message} />
+                )}
               </div>
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full">

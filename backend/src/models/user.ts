@@ -5,7 +5,7 @@ import { IUser } from '../types/auth';
 type IUserDoc = IUser & Document;
 
 const userSchema = new Schema<IUserDoc>({
-  username: { type: String, required: true, unique: true, minlength: 4 },
+  username: { type: String, required: true, unique: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
 });

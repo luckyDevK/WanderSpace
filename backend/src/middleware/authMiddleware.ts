@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken';
 
 import { AuthRequest } from '../types/auth';
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODU0MjE2MzdhMTViZDA0NDcwOTkwNTgiLCJpYXQiOjE3NTAzNDU1MTgsImV4cCI6MTc1MDM0OTExOH0.1bbvOJKCm30ZyuO25QbUncsNN3iPFLQ_duyXufK6hQ
-
 export const authMiddleware = (
   req: AuthRequest,
   res: Response,

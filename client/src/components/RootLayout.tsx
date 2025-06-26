@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <>
       <Header />
-      <main className="container mx-auto  flex justify-center flex-col  px-5 mb-10">
+      <main className="container mx-auto flex justify-center flex-col px-5 mb-10">
         <Outlet />
       </main>
     </>

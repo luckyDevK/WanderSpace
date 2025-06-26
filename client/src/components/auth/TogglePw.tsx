@@ -1,20 +1,17 @@
-import { useState } from 'react';
+import { useState, type InputHTMLAttributes } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
-export default function TogglePw() {
+type TogglePwProps = InputHTMLAttributes<HTMLInputElement>;
+
+export default function TogglePw(props: TogglePwProps) {
   const [showPw, setShowPw] = useState(false);
 
   return (
     <div className="flex">
-      <Input
-        id="password"
-        className="mr-1"
-        type={showPw ? 'text' : 'password'}
-        required
-      />
+      <Input {...props} className="mr-1" type={showPw ? 'text' : 'password'} />
       <Button
         type="button"
         onClick={() => setShowPw((prev) => !prev)}

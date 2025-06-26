@@ -9,9 +9,7 @@ const validateTitle = (): ValidationChain => {
     msg: 'Title is required',
   })
     .isLength({ min: 4 })
-    .withMessage('Title must be at least 4 characters long')
-    .isAlphanumeric('en-US', { ignore: ' ' })
-    .withMessage('Title must be alphanumeric');
+    .withMessage('Title must be at least 4 characters long');
 };
 
 const validateDesc = (): ValidationChain => {
@@ -75,9 +73,7 @@ export const editPlaceValidator: ValidationChain[] = [
   body('title')
     .optional()
     .isLength({ min: 4 })
-    .withMessage('Title must be at least 4 characters')
-    .isAlphanumeric('en-US', { ignore: ' ' })
-    .withMessage('Title must be alphanumeric'),
+    .withMessage('Title must be at least 4 characters'),
 
   body('description')
     .optional()

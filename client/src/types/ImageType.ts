@@ -1,7 +1,7 @@
 import type { CategoryType } from '@/lib/categories';
 
 export interface IImage {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   imageUrl: string;
