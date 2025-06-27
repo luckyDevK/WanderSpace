@@ -3,40 +3,18 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import api from '@/lib/api/axios';
-import type { ISignIn, ISignUp } from './useAuth';
-import { AuthContext } from './useAuth';
-
-const storedToken = localStorage.getItem('token')
-  ? localStorage.getItem('token')
-  : null;
-
-const storedUsername = localStorage.getItem('username')
-  ? localStorage.getItem('username')
-  : null;
+import type { ISignIn, ISignUp } from '../hooks/useAuth';
+import { AuthContext } from '../hooks/useAuth';
 
 export default function AuthContextProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [token, setToken] = useState<string | null>(storedToken);
-  const [username, setUsername] = useState<string | null>(storedUsername);
+  const [token, setToken] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', username || '');
-    } else {
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-    }
-  }, [token, username]);
-
-  useEffect(() => {
-    console.log(token);
-  });
 
   const handleSignIn = async ({ identifier, password }: ISignIn) => {
     const { data } = await api.post('/auth/signin', { identifier, password });

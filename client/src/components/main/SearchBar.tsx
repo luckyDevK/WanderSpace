@@ -1,4 +1,4 @@
-import { usePlacesContext } from '@/context/usePlaceContext';
+import { usePlacesContext } from '@/hooks/usePlaceContext';
 
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';

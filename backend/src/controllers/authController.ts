@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { matchedData, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken';
 
 import { SignInBodyInput, SignUpBodyInput } from '../types/auth';
 import User from '../models/user';
@@ -45,6 +45,10 @@ export const signinController = async (
     $or: [{ email: identifier }, { username: identifier }],
   });
 
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   const hashedPassword = user?.password as string;
 
   const isMatch = await bcrypt.compare(password, hashedPassword);
@@ -54,20 +58,105 @@ export const signinController = async (
     return;
   }
 
-  const jwtSecret = process.env.JWT_SECRET;
+  const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 
-  if (!jwtSecret) {
-    throw new Error('JWT_SECRET is not defined in environment variables');
+  if (!accessTokenSecret || !refreshTokenSecret) {
+    throw new Error(
+      'Access token or refresh is not defined in environment variables',
+    );
   }
 
-  const token = jwt.sign({ userId: user?._id }, jwtSecret, {
-    expiresIn: '1h',
+  const accessToken = jwt.sign(
+    { identifier: identifier, userId: user?._id },
+    accessTokenSecret,
+    { expiresIn: '20m' },
+  );
+
+  const refreshToken = jwt.sign({ userId: user?._id }, refreshTokenSecret, {
+    expiresIn: '8d',
+  });
+
+  res.cookie('jwt', refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.json({
     message: 'success',
-    token,
-    username: user?.username,
+    accessToken,
+    account: {
+      id: user?._id,
+      username: user?.username,
+    },
   });
   return;
+};
+
+export const refresh = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) {
+    res.status(401).json({ message: 'WOWOL', ww: 'Palok' });
+    return;
+  }
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET!,
+    (err, decoded) => {
+      if (err || typeof decoded !== 'object') {
+        return res.status(403).json({ message: 'Forbidden' });
+      }
+
+      console.log(decoded.userId);
+      // Move async logic outside the callback
+      (async () => {
+        const user = await User.findOne({ _id: decoded.userId });
+
+        if (!user) {
+          return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const accessToken = jwt.sign(
+          {
+            identifier: decoded.identifier,
+            userId: user._id,
+          },
+          process.env.ACCESS_TOKEN_SECRET!,
+          { expiresIn: '20m' },
+        );
+
+        res.json({ accessToken });
+        return;
+      })().catch((err) => {
+        console.error(err);
+        res.status(500).json({ message: 'Internal server error' });
+      });
+    },
+  );
+};
+
+export const logoutController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const cookies = req.cookies;
+
+  if (!cookies) {
+    res.status(204);
+    return;
+  }
+
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true });
+  res.json({ message: 'Cookie cleared' });
 };

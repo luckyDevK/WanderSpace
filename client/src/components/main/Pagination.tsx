@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/pagination';
 import { cn } from '@/lib/utils';
 
-import { usePlacesContext } from '@/context/usePlaceContext';
+import { usePlacesContext } from '@/hooks/usePlaceContext';
 
 export default function PaginationTabs() {
   const {

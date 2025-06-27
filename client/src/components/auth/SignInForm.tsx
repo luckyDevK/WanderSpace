@@ -17,7 +17,7 @@ import { SignInSchema } from '@/schema/schema';
 
 import ErrorMsg from './ErrorMsg';
 
-import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import TogglePw from './TogglePw';
 
 type SignInForm = z.infer<typeof SignInSchema>;

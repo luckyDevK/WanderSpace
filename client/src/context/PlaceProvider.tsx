@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { PlaceContext } from './usePlaceContext';
+import { PlaceContext } from '../hooks/usePlaceContext';
 import { getPlaces, searchPlace } from '../lib/api/fetchPlaces';
 
 export default function PlaceContextProvider({
@@ -19,13 +19,13 @@ export default function PlaceContextProvider({
 
   const { data: paginatedData, isLoading: isPaginatedLoading } = useQuery({
     queryKey: ['places', page],
-    queryFn: () => getPlaces(limit, page),
+    queryFn: ({ signal }) => getPlaces(limit, page, signal),
     enabled: q === '',
   });
 
   const { data: searchedData, isPending: isSearchLoading } = useQuery({
     queryKey: ['searchPlaces', q],
-    queryFn: () => searchPlace(q),
+    queryFn: ({ signal }) => searchPlace(q, signal),
     enabled: q !== '',
   });
 

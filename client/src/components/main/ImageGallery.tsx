@@ -1,4 +1,4 @@
-import { usePlacesContext } from '@/context/usePlaceContext';
+import { usePlacesContext } from '@/hooks/usePlaceContext';
 
 import { DialogGallery } from './gallery-dialog/DialogGallery';
 import ImageWrapper from './ImageWrapper';

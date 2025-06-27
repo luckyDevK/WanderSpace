@@ -1,6 +1,6 @@
 import { screen, render, within } from '@testing-library/react';
-import { PlaceContext } from '@/context/usePlaceContext';
-import type { PlaceContextType } from '@/context/usePlaceContext';
+import { PlaceContext } from '@/hooks/usePlaceContext';
+import type { PlaceContextType } from '@/hooks/usePlaceContext';
 
 import ImageGallery from '../src/components/main/ImageGallery';
 import { expect } from 'vitest';

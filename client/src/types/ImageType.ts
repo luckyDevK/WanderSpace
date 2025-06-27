@@ -13,3 +13,7 @@ export interface IImage {
   };
   createdAt: Date;
 }
+
+type NumAndActionsType = { no: number; actions?: React.JSX.Element };
+
+export type RowData = NumAndActionsType & Omit<IImage, '_id' | 'createdBy'>;

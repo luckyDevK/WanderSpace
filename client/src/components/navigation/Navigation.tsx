@@ -13,7 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { Home, LayoutDashboard } from 'lucide-react';
 
 import { Menu } from 'lucide-react';
-import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Navigation() {
   const { token, handleSignOut } = useAuth();

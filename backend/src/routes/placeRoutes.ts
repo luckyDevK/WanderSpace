@@ -18,20 +18,10 @@ const router = Router();
 
 router.get('/', getPlaces);
 router.get('/search', searchPlaces);
-router.post(
-  '/create',
-  authMiddleware,
-  createPlaceValidator,
-  validationRequest,
-  createPlace,
-);
-router.patch(
-  `/update/:id`,
-  authMiddleware,
-  editPlaceValidator,
-  validationRequest,
-  updatePlace,
-);
-router.delete('/delete/:id', authMiddleware, deletePlace);
+
+router.use(authMiddleware);
+router.post('/create', createPlaceValidator, validationRequest, createPlace);
+router.patch(`/update/:id`, editPlaceValidator, validationRequest, updatePlace);
+router.delete('/delete/:id', deletePlace);
 
 export default router;

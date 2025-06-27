@@ -11,27 +11,28 @@ export const authMiddleware = (
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.json({ message: 'Invalid credentials broror' });
+    res.json({ message: 'Invalid credentials ' });
     return;
   }
 
   const token = authHeader.split(' ')[1];
   console.log(authHeader);
 
-  if (!process.env.JWT_SECRET) {
-    throw new Error('JWT_SECRET is not defined in environment variables');
+  if (!process.env.ACCESS_TOKEN_SECRET) {
+    throw new Error(
+      'ACCESS_TOKEN_SECRET is not defined in environment variables',
+    );
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      userId: string;
-    };
-    console.log(decoded);
-    req.userId = decoded.userId;
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: 'Forbidden' });
 
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Invalid token' });
-    return;
-  }
+    if (typeof decoded === 'object') {
+      req.userId = decoded?.userId;
+      req.identifier = decoded?.identifier;
+      next();
+    } else {
+      res.status(403).json({ message: 'Invalid token structure' });
+    }
+  });
 };

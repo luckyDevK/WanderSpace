@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SignUpSchema } from '@/schema/schema';
 
-import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import TogglePw from './TogglePw';
 import ErrorMsg from './ErrorMsg';
 
