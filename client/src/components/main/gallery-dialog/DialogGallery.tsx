@@ -3,28 +3,33 @@ import type { IImage } from '../../../types/ImageType';
 import ImageMeta from './ImageMeta';
 import ImagePreview from './ImagePreview';
 import ImageFooter from './ImageFooter';
+import ImageWrapper from '../ImageWrapper';
 
-interface DialogProps {
-  children: React.ReactNode;
-  place: IImage;
-}
-
-export function DialogGallery({ children, place }: DialogProps) {
+export function DialogGallery({
+  title,
+  location,
+  imageUrl,
+  description,
+  createdBy,
+  category,
+}: Omit<IImage, '_id' | 'createdAt'>) {
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger>
+        <ImageWrapper imageUrl={imageUrl} title={title} />
+      </DialogTrigger>
 
       <DialogContent className="max-w-xl w-[90%] bg-white p-6 rounded-xl [&>button]:hidden">
         <ImageMeta
-          category={place.category}
-          createdBy={place.createdBy}
-          location={place.location}
+          category={category}
+          createdBy={createdBy}
+          location={location}
         />
-        <ImagePreview imageUrl={place.imageUrl} title={place.title} />
+        <ImagePreview imageUrl={imageUrl} title={title} />
         <ImageFooter
-          description={place.description}
-          title={place.title}
-          imageUrl={place.imageUrl}
+          description={description}
+          title={title}
+          imageUrl={imageUrl}
         />
       </DialogContent>
     </Dialog>

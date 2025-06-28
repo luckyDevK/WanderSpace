@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import api from '@/lib/api/axios';
-import type { ISignIn, ISignUp } from '../hooks/useAuth';
+import { isAxiosError } from 'axios';
+import axios from '@/lib/api/axios';
+import type { ISignIn, ISignUp, IAccount } from '../hooks/useAuth';
 import { AuthContext } from '../hooks/useAuth';
+
+const storedAccount = localStorage.getItem('account')
+  ? JSON.parse(localStorage.getItem('account') as string)
+  : null;
 
 export default function AuthContextProvider({
   children,
@@ -12,24 +16,52 @@ export default function AuthContextProvider({
   children: React.ReactNode;
 }) {
   const [token, setToken] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
+  const [account, setAccount] = useState<IAccount | null>(storedAccount);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (account) {
+      localStorage.setItem('account', JSON.stringify(account));
+    } else {
+      localStorage.removeItem('account');
+    }
+  }, [account]);
+
   const handleSignIn = async ({ identifier, password }: ISignIn) => {
-    const { data } = await api.post('/auth/signin', { identifier, password });
+    try {
+      const { data } = await axios.post(
+        '/auth/signin',
+        {
+          identifier,
+          password,
+        },
+        { withCredentials: true },
+      );
 
-    console.log(data.username);
-    const usernameAccount = data.username as string;
-    const token = data.token as string;
+      const accountUser = data.account;
 
-    console.log(data);
-    if (data.message === 'success') {
-      setUsername(usernameAccount);
-      setToken(token);
-      navigate('/');
+      const accessToken = data.accessToken;
+
+      if (data.message === 'success') {
+        setToken(accessToken);
+        setAccount(accountUser);
+        navigate('/');
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          alert(error.response.data.message || 'Unauthorized');
+        } else {
+          alert('Something went wrong');
+        }
+      }
     }
   };
+
+  useEffect(() => {
+    console.log(account);
+  }, []);
 
   const handleSignUp = async ({
     username,
@@ -37,34 +69,51 @@ export default function AuthContextProvider({
     password,
     confirmPw,
   }: ISignUp) => {
-    const { data } = await api.post('/auth/signup', {
-      username,
-      email,
-      password,
-      confirmPw,
-    });
+    try {
+      const { data } = await axios.post('/auth/signup', {
+        username,
+        email,
+        password,
+        confirmPw,
+      });
 
-    const success = data.success;
+      const success = data.success;
 
-    if (success) {
-      navigate('/signin');
+      if (success) {
+        navigate('/signin');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleSignOut = () => {
-    setToken(null);
-    setUsername(null);
+  const handleSignOut = async () => {
+    try {
+      const res = await axios.post(
+        '/auth/logout',
+        {},
+        { withCredentials: true },
+      );
+
+      if (res.status === 200 || res.status === 204) {
+        setToken(null);
+        setAccount(null);
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const ctxAuthValues = useMemo(
     () => ({
       token,
-      username,
+      setToken,
+      account,
       handleSignIn,
       handleSignUp,
       handleSignOut,
     }),
-    [token, username],
+    [token, account],
   );
 
   return <AuthContext value={ctxAuthValues}>{children}</AuthContext>;

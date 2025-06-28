@@ -17,7 +17,6 @@ export const downloadImg = async (
 
     const blobUrl = URL.createObjectURL(response.data);
 
-    console.log(blobUrl);
     const link = document.createElement('a');
     link.href = blobUrl;
     link.download = fileName;

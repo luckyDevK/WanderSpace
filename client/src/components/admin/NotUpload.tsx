@@ -1,6 +1,6 @@
 import { FileX } from 'lucide-react';
 
-import { PlaceDialog } from './PlaceDialog';
+import { PlaceDialog } from './NewPlaceDialog';
 import { Button } from '../ui/button';
 
 export default function NotUpload() {

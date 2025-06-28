@@ -13,7 +13,7 @@ import { authMiddleware } from '../middleware/authMiddleware';
 const router = Router();
 
 router.get('/refresh', refresh);
-router.post('/logout', authMiddleware, logoutController);
+router.post('/logout', logoutController);
 router.post('/signup', signUpValidator, validationRequest, registerController);
 router.post('/signin', signInValidator, validationRequest, signinController);
 

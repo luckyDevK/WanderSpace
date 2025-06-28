@@ -1,10 +1,14 @@
 import { useAuth } from '@/hooks/useAuth';
 import Dashboard from '@/components/admin/Dashboard';
 import NotUpload from '@/components/admin/NotUpload';
-import TableDashboard from '@/components/admin/TableDashboard';
+import TableAdmin from '@/components/admin/TableDashboard';
 
 export default function DashboardPage() {
-  const { username } = useAuth();
+  const auth = useAuth();
+
+  const username = auth?.account?.username;
+
+  console.log(username);
 
   return (
     <section className="mt-16 px-4">
@@ -16,8 +20,8 @@ export default function DashboardPage() {
           Welcome to your WanderSpace dashboard ✨
         </p>
       </header>
-      <NotUpload />
-      <TableDashboard />
+      <Dashboard />
+      <TableAdmin />
     </section>
   );
 }

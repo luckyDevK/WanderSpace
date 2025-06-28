@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp';
 import DashboardPage from './pages/DashboardPage';
 import PageNotFound from './pages/PageNoutFound';
 import ProtectedRoute from './pages/ProtectedRoute';
+import PersistLogin from './components/auth/PersistLogin';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,10 +26,12 @@ function App() {
           <PlaceContextProvider>
             <AuthContextProvider>
               <Routes>
-                <Route path="/" element={<RootLayout />}>
-                  <Route index element={<Home />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="dashboard" element={<DashboardPage />} />
+                <Route element={<PersistLogin />}>
+                  <Route path="/" element={<RootLayout />}>
+                    <Route index element={<Home />} />
+                    <Route element={<ProtectedRoute />}>
+                      <Route path="dashboard" element={<DashboardPage />} />
+                    </Route>
                   </Route>
                 </Route>
                 <Route path="/signin" element={<SignIn />} />

@@ -46,7 +46,8 @@ export const signinController = async (
   });
 
   if (!user) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).json({ message: 'Unauthorized' });
+    return;
   }
 
   const hashedPassword = user?.password as string;
@@ -70,7 +71,7 @@ export const signinController = async (
   const accessToken = jwt.sign(
     { identifier: identifier, userId: user?._id },
     accessTokenSecret,
-    { expiresIn: '20m' },
+    { expiresIn: '10s' },
   );
 
   const refreshToken = jwt.sign({ userId: user?._id }, refreshTokenSecret, {
@@ -90,6 +91,7 @@ export const signinController = async (
     account: {
       id: user?._id,
       username: user?.username,
+      email: user?.email,
     },
   });
   return;
@@ -103,7 +105,7 @@ export const refresh = (
   const cookies = req.cookies;
 
   if (!cookies?.jwt) {
-    res.status(401).json({ message: 'WOWOL', ww: 'Palok' });
+    res.status(401).json({ message: 'Unauthorized' });
     return;
   }
 
@@ -117,7 +119,6 @@ export const refresh = (
         return res.status(403).json({ message: 'Forbidden' });
       }
 
-      console.log(decoded.userId);
       // Move async logic outside the callback
       (async () => {
         const user = await User.findOne({ _id: decoded.userId });

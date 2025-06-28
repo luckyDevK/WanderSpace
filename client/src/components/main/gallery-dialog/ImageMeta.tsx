@@ -24,7 +24,7 @@ export default function ImageMeta({
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>{' '}
-        {!createdBy.username ? 'sakon' : createdBy.username}
+        {createdBy.username}
       </p>
     </div>
   );

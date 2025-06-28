@@ -176,28 +176,31 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 export default function TableDashboard() {
   const [rowData, setRowData] = useState<RowData[]>(dummyPlaces);
 
-  const [colDefs, setColDefs] = useState<ColDef<RowData>[]>([
-    { field: 'no' },
-    { field: 'title', filter: true },
-    {
-      field: 'description',
-      wrapText: true,
-      maxWidth: 325,
-    },
-    {
-      field: 'imageUrl',
-      cellRenderer: memo(PlaceImgRenderer),
-      autoHeight: true,
-    },
-    { field: 'location', maxWidth: 250, wrapText: true },
-    { field: 'category', filter: true },
-    {
-      field: 'createdAt',
-      valueFormatter: (params) =>
-        new Date(params.value).toLocaleDateString('id-ID'),
-    },
-    { field: 'actions', cellRenderer: ActionsRenderer },
-  ]);
+  const colDefs = useMemo<ColDef<RowData>[]>(
+    () => [
+      { field: 'no' },
+      { field: 'title', filter: true },
+      {
+        field: 'description',
+        wrapText: true,
+        maxWidth: 325,
+      },
+      {
+        field: 'imageUrl',
+        cellRenderer: memo(PlaceImgRenderer),
+        autoHeight: true,
+      },
+      { field: 'location', maxWidth: 250, wrapText: true },
+      { field: 'category', filter: true },
+      {
+        field: 'createdAt',
+        valueFormatter: (params) =>
+          new Date(params.value).toLocaleDateString('id-ID'),
+      },
+      { field: 'actions', cellRenderer: ActionsRenderer },
+    ],
+    [],
+  );
 
   return (
     <div className="mt-10 mb-5 h-150">

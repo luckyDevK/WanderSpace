@@ -27,7 +27,7 @@ export default function ImagePreview({ imageUrl, title }: ImagePreviewProps) {
       onClick={handleFullScreen}
       src={imageUrl}
       alt={title}
-      className={`max-h-[70vh] object-contain rounded-md ${isFullscreen ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+      className={`max-h-[30vh] w-full object-contain rounded-md ${isFullscreen ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
     />
   );
 }

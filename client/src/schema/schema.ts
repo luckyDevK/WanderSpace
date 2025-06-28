@@ -1,5 +1,7 @@
 import * as z from 'zod/v4';
 
+import { categories } from '@/lib/categories';
+
 export const SignUpSchema = z
   .object({
     username: z
@@ -27,16 +29,20 @@ export const SignInSchema = z.object({
   password: z.string().nonempty('Password is required'),
 });
 
-export const CreatePlaceSchema = z.object({
+export const NewPlaceSchema = z.object({
   title: z
     .string()
     .nonempty('title is required')
     .min(4, 'Title must be at least 4 characters'),
-  description: z.string().nonempty('desc is required').min(10, 'Descir min 10'),
+  description: z
+    .string()
+    .nonempty('Description is required')
+    .min(10, 'Description min 10'),
   location: z
     .string()
     .nonempty('location is required')
-    .min(5, 'minimal length 5'),
+    .min(3, 'minimal length 5'),
+  category: z.enum(categories, { error: 'category is required' }),
   imageUrl: z
     .string()
     .refine(

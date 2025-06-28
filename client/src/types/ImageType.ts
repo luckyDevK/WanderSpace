@@ -1,6 +1,6 @@
 import type { CategoryType } from '@/lib/categories';
 
-export interface IImage {
+export interface IPlaceUser {
   _id: string;
   title: string;
   description: string;
@@ -16,4 +16,4 @@ export interface IImage {
 
 type NumAndActionsType = { no: number; actions?: React.JSX.Element };
 
-export type RowData = NumAndActionsType & Omit<IImage, '_id' | 'createdBy'>;
+export type RowData = NumAndActionsType & Omit<IPlaceUser, '_id' | 'createdBy'>;

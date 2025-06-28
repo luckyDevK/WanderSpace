@@ -27,6 +27,7 @@ export const getPlaces = async (
 
   const updatedPlaces = await Place.find()
     .select('-__v  -updatedAt')
+    .populate('createdBy', 'username')
     .skip(skip)
     .limit(limit);
 
@@ -58,9 +59,9 @@ export const createPlace = async (
     createdBy: req.userId,
   });
 
-  const populatedPlace = await Place.findById(place._id)
-    .select('-__v -updatedAt')
-    .populate('createdBy', 'username');
+  const populatedPlace = await Place.findById(place._id).select(
+    '-__v -updatedAt',
+  );
 
   return res.status(201).json({ message: 'success', places: populatedPlace });
 };

@@ -1,7 +1,11 @@
 import { Clock, UploadCloud, CalendarDays } from 'lucide-react';
+import axios from '@/lib/api/axios';
+import type { IPlaceUser } from '@/types/ImageType';
 
 import { Button } from '../ui/button';
-import { PlaceDialog } from './PlaceDialog';
+import { PlaceDialog } from './NewPlaceDialog';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 function StatCard({
   icon: Icon,
@@ -22,6 +26,31 @@ function StatCard({
 }
 
 export default function Dashboard() {
+  const [places, setPlaces] = useState<IPlaceUser[]>([]);
+  const auth = useAuth();
+
+  const currentUserId = auth?.account?.id;
+
+  console.log(currentUserId);
+
+  const totalUploads = places.filter((place) => place._id === currentUserId);
+
+  console.log(totalUploads);
+
+  useEffect(() => {
+    console.log(places);
+  }, [places]);
+
+  useEffect(() => {
+    const getPlaces = async () => {
+      const { data } = await axios.get('/place');
+
+      setPlaces(data.places);
+    };
+
+    getPlaces();
+  }, []);
+
   return (
     <>
       <section className="max-w-4xl w-full  px-4 py-8 border-2 border-slate-800 rounded-xl">

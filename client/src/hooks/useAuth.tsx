@@ -12,22 +12,23 @@ export interface ISignUp {
   confirmPw: string;
 }
 
+export interface IAccount {
+  id: string;
+  email: string;
+  username: string;
+}
+
 export interface IAuthContext {
-  username: string | null;
+  account: IAccount | null;
   token: string | null;
+  setToken: React.Dispatch<React.SetStateAction<string | null>>;
   handleSignIn: (data: ISignIn) => Promise<void>;
   handleSignUp: (data: ISignUp) => Promise<void>;
   handleSignOut: () => void;
 }
 
-export const AuthContext = createContext<IAuthContext | null>(null);
+export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 export const useAuth = () => {
-  const token = useContext(AuthContext);
-
-  if (!token) {
-    throw new Error('useAuth must be used within a AuthProvider');
-  }
-
-  return token;
+  return useContext(AuthContext);
 };
