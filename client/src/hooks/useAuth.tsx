@@ -12,14 +12,7 @@ export interface ISignUp {
   confirmPw: string;
 }
 
-export interface IAccount {
-  id: string;
-  email: string;
-  username: string;
-}
-
 export interface IAuthContext {
-  account: IAccount | null;
   token: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   handleSignIn: (data: ISignIn) => Promise<void>;

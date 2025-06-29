@@ -1,11 +1,19 @@
 import { Clock, UploadCloud, CalendarDays } from 'lucide-react';
-import axios from '@/lib/api/axios';
-import type { IPlaceUser } from '@/types/ImageType';
 
-import { Button } from '../ui/button';
-import { PlaceDialog } from './NewPlaceDialog';
-import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
+import { getMyUser } from '@/lib/api/admin';
+import Spinner from '../customized/spinner/spinner-08';
+import { PlaceDialog } from './NewPlaceDialog';
+import useAdmin from '@/hooks/useAdmin';
+
+interface IAdminContext {
+  totalUploads: number | undefined;
+  mostRecentUpload: string;
+  uploadedThisWeek: number;
+  userPlace: IPlaceUser[] | undefined;
+  isLoading: boolean;
+}
 
 function StatCard({
   icon: Icon,
@@ -26,30 +34,14 @@ function StatCard({
 }
 
 export default function Dashboard() {
-  const [places, setPlaces] = useState<IPlaceUser[]>([]);
   const auth = useAuth();
+  const token = auth?.token;
 
-  const currentUserId = auth?.account?.id;
-
-  console.log(currentUserId);
-
-  const totalUploads = places.filter((place) => place._id === currentUserId);
-
-  console.log(totalUploads);
-
-  useEffect(() => {
-    console.log(places);
-  }, [places]);
-
-  useEffect(() => {
-    const getPlaces = async () => {
-      const { data } = await axios.get('/place');
-
-      setPlaces(data.places);
-    };
-
-    getPlaces();
-  }, []);
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ['myPlace'],
+    queryFn: ({ signal }) => getMyUser(signal),
+    enabled: !!token,
+  });
 
   return (
     <>

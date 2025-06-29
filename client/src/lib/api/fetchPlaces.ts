@@ -1,9 +1,9 @@
 import api from './axios';
 
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 
 interface IGetPlaces {
-  places: IImage[];
+  places: IPlaceUser[];
   total: number;
   totalPages: number;
 }
@@ -23,7 +23,7 @@ export async function getPlaces(
 export async function searchPlace(
   q: string,
   signal: AbortSignal,
-): Promise<IImage[]> {
+): Promise<IPlaceUser[]> {
   const { data } = await api.get(`/place/search?q=${encodeURIComponent(q)}`, {
     signal,
   });

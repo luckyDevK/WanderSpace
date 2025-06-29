@@ -25,8 +25,6 @@ export const registerController = async (
     password: hashedPassword,
   });
 
-  const { password, __v, ...userWithoutPassword } = newUser.toObject();
-
   res.status(201).json({
     success: true,
     message: 'User registered successfully',
@@ -71,7 +69,7 @@ export const signinController = async (
   const accessToken = jwt.sign(
     { identifier: identifier, userId: user?._id },
     accessTokenSecret,
-    { expiresIn: '10s' },
+    { expiresIn: '25m' },
   );
 
   const refreshToken = jwt.sign({ userId: user?._id }, refreshTokenSecret, {
@@ -88,11 +86,6 @@ export const signinController = async (
   res.json({
     message: 'success',
     accessToken,
-    account: {
-      id: user?._id,
-      username: user?.username,
-      email: user?.email,
-    },
   });
   return;
 };

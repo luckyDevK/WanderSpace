@@ -4,6 +4,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import Home from './pages/Home';
 import PlaceContextProvider from './context/PlaceProvider';
 import AuthContextProvider from './context/AuthProvider';
+
 import RootLayout from './components/RootLayout';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';

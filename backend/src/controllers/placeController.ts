@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { matchedData, validationResult } from 'express-validator';
-import { Document } from 'mongoose';
-import { decode } from 'jsonwebtoken';
 
 import {
   CreatePlaceInput,
@@ -13,6 +11,7 @@ import { seedDefaultUser } from '../seed/defaultUser';
 import { seedBeautifulPlaces } from '../seed/seedBeautifulPlaces';
 import Place from '../models/place';
 import { AuthRequest } from '../types/auth';
+import User from '../models/user';
 
 export const getPlaces = async (
   req: Request<{}, {}, {}, { page: number; limit: number }>,
@@ -63,7 +62,7 @@ export const createPlace = async (
     '-__v -updatedAt',
   );
 
-  return res.status(201).json({ message: 'success', places: populatedPlace });
+  return res.status(201).json({ message: 'success', place: populatedPlace });
 };
 
 export const updatePlace = async (
@@ -88,7 +87,7 @@ export const updatePlace = async (
 
   res.status(200).json({
     message: 'success',
-    places: updated,
+    place: updated,
   });
   return;
 };
@@ -116,7 +115,7 @@ export const searchPlaces = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const query = req.query.q?.trim() || '';
+  const query = decodeURIComponent(req.query.q?.trim() as string);
 
   const results = await Place.find({
     $or: [

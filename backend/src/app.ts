@@ -2,7 +2,8 @@ import cors from 'cors';
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auth';
+import userRoutes from './routes/userRoutes';
+import authRoutes from './routes/authRoutes';
 import placeRoutes from './routes/placeRoutes';
 import { errorHandler } from './middleware/errorHandlers';
 
@@ -19,6 +20,7 @@ app.use(
   }),
 );
 
+app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/place', placeRoutes);
 

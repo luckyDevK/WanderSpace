@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 
 export interface PlaceContextType {
-  places: IImage[];
+  places: IPlaceUser[];
   totalPages: number;
   isLoading: boolean;
   page: number;
