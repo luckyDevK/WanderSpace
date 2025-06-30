@@ -14,7 +14,7 @@ export default function DashboardPage() {
           Welcome to your WanderSpace dashboard ✨
         </p>
       </header>
-      <NotUpload />
+      <Dashboard />
       <TableAdmin />
     </section>
   );

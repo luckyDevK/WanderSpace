@@ -30,18 +30,3 @@ export const downloadImg = async (
     console.error('Download failed:', error);
   }
 };
-
-export const getMostRecentDate = (dateIsoStrings: string[]): string => {
-  if (!dateIsoStrings || dateIsoStrings.length === 0) return 'N/A';
-
-  const timeStamps = dateIsoStrings.map((d) => DateTime.fromISO(d));
-
-  const mostRecentTime = timeStamps.reduce(
-    (longest, currVal) => (currVal > longest ? currVal : longest),
-    timeStamps[0],
-  );
-
-  const localeDate = mostRecentTime.toLocaleString(DateTime.DATETIME_SHORT);
-
-  return localeDate;
-};

@@ -11,7 +11,7 @@ export const authMiddleware = (
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.json({ message: 'Invalid credentials ' });
+    res.json({ message: 'Invalid kontol ' });
     return;
   }
 
@@ -28,6 +28,7 @@ export const authMiddleware = (
     if (err) return res.status(403).json({ message: 'Forbidden' });
 
     if (typeof decoded === 'object') {
+      console.log(decoded?.userId, 'wwsm');
       req.userId = decoded?.userId;
       req.identifier = decoded?.identifier;
       next();

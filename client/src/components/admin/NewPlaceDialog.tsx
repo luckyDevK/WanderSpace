@@ -1,16 +1,16 @@
-import * as z from 'zod/v4';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod/v4';
 
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogTrigger,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,56 +23,59 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '../ui/textarea';
+import { Button } from '@/components/ui/button';
+
 import { categories } from '@/lib/categories';
 import { NewPlaceSchema } from '@/schema/schema';
 import ErrorMsg from '../auth/ErrorMsg';
-import { useState } from 'react';
-import type { PlaceDialogProps } from '@/types/PlaceType';
-import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 
-type NewPlaceType = z.infer<typeof NewPlaceSchema>;
+import type { PlaceDialogProps } from '@/types/PlaceDialogType';
 
-export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
+export type NewPlaceType = z.infer<typeof NewPlaceSchema>;
+
+export default function PlaceDialog({
+  isEdit,
+  initialValues,
+  isOpen,
+  setIsOpen,
+  handleClose,
+  IconTrigger,
+  handleSubmit: submitData,
+}: PlaceDialogProps) {
   const {
     register,
     setValue,
     reset,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitSuccessful, isSubmitting },
   } = useForm<NewPlaceType>({
     resolver: zodResolver(NewPlaceSchema),
+    defaultValues: initialValues,
   });
 
-  const [open, setOpen] = useState(false);
+  console.log(initialValues, 'vaiIn');
 
-  const axiosPrivate = useAxiosPrivate();
+  useEffect(() => {
+    if (initialValues) {
+      reset(initialValues);
+    }
+  }, [initialValues, reset]);
 
-  const handleSubmitPlace = async (data: NewPlaceType) => {
-    if (isValid) {
-      const res = await axiosPrivate.post('/place/create', data);
-
-      console.log(res);
-
-      setOpen(false);
+  useEffect(() => {
+    if (isSubmitSuccessful && !isEdit) {
       reset();
     }
-  };
+  }, [isSubmitSuccessful, reset, isEdit]);
 
-  function handleClose() {
-    setOpen(false);
-    reset();
-  }
-
-  const customFormHandler = handleSubmit(handleSubmitPlace);
+  const customFormHandler = handleSubmit((data) => submitData(data, isValid));
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" className="mt-10 border-2 border-slate-600">
-          {isEdit ? 'Update your place' : 'Create your first place'}
+          {isEdit ? <IconTrigger strokeWidth={4} /> : 'Create your first place'}
         </Button>
       </DialogTrigger>
-
       <DialogContent className="md:max-w-md [&>button]:hidden">
         <form onSubmit={customFormHandler}>
           <DialogHeader>
@@ -92,10 +95,8 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
               <Input
                 {...register('title')}
                 id="title"
-                name="title"
                 type="text"
                 placeholder="Tumpak Sewu"
-                defaultValue={initialValues?.title}
               />
               {errors.title?.message && <ErrorMsg msg={errors.title.message} />}
             </div>
@@ -105,10 +106,8 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
               <Input
                 {...register('imageUrl')}
                 id="imageUrl"
-                name="imageUrl"
                 type="text"
                 placeholder="https://example.com/image.jpg"
-                defaultValue={initialValues?.imageUrl}
               />
               {errors.imageUrl?.message && (
                 <ErrorMsg msg={errors.imageUrl.message} />
@@ -120,10 +119,8 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
               <Input
                 {...register('location')}
                 id="location"
-                name="location"
                 type="text"
                 placeholder="Lumajang, East Java, Indonesia"
-                defaultValue={initialValues?.location}
               />
               {errors.location?.message && (
                 <ErrorMsg msg={errors.location.message} />
@@ -138,11 +135,7 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
                   setValue('category', val as NewPlaceType['category'])
                 }
               >
-                <SelectTrigger
-                  className="w-full"
-                  {...register('category')}
-                  name="category"
-                >
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -165,9 +158,7 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
               <Textarea
                 {...register('description')}
                 id="description"
-                name="description"
                 placeholder="Write a brief description..."
-                defaultValue={initialValues?.description}
               />
               {errors.description?.message && (
                 <ErrorMsg msg={errors.description.message} />
@@ -180,7 +171,37 @@ export function PlaceDialog({ isEdit, initialValues }: PlaceDialogProps) {
               Cancel
             </Button>
 
-            <Button>{isEdit ? 'Save changes' : 'Submit data'}</Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex items-center cursor-pointer justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isSubmitting && (
+                <svg
+                  className="h-5 w-5 animate-spin text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 
+                    5.291A7.962 7.962 0 014 12H0c0 
+                    3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+              )}
+              <span>{isEdit ? 'Save changes' : 'Submit data'}</span>
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

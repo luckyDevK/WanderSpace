@@ -1,19 +1,10 @@
 import { Clock, UploadCloud, CalendarDays } from 'lucide-react';
+import { useState } from 'react';
 
-import { useAuth } from '@/hooks/useAuth';
-import { useQuery } from '@tanstack/react-query';
-import { getMyUser } from '@/lib/api/admin';
 import Spinner from '../customized/spinner/spinner-08';
-import { PlaceDialog } from './NewPlaceDialog';
-import useAdmin from '@/hooks/useAdmin';
-
-interface IAdminContext {
-  totalUploads: number | undefined;
-  mostRecentUpload: string;
-  uploadedThisWeek: number;
-  userPlace: IPlaceUser[] | undefined;
-  isLoading: boolean;
-}
+import PlaceDialog from './NewPlaceDialog';
+import { useAdmin } from '@/hooks/useAdmin';
+import useModal from '@/hooks/useModal';
 
 function StatCard({
   icon: Icon,
@@ -34,29 +25,43 @@ function StatCard({
 }
 
 export default function Dashboard() {
-  const auth = useAuth();
-  const token = auth?.token;
+  const { totalUploads, mostRecentUpload, uploadedThisWeek, isLoading } =
+    useAdmin();
 
-  const { data: userData, isLoading } = useQuery({
-    queryKey: ['myPlace'],
-    queryFn: ({ signal }) => getMyUser(signal),
-    enabled: !!token,
-  });
+  const { handleSubmitNewPlace, handleClose, open, setOpen } = useModal();
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
       <section className="max-w-4xl w-full  px-4 py-8 border-2 border-slate-800 rounded-xl">
         <div className="flex justify-around items-center gap-5 flex-wrap">
-          <StatCard icon={UploadCloud} title="Total Uploads" value={20} />
+          <StatCard
+            icon={UploadCloud}
+            title="Total Uploads"
+            value={totalUploads}
+          />
           <StatCard
             icon={Clock}
             title="Most Recent Upload"
-            value="10 Jan 2020"
+            value={mostRecentUpload}
           />
-          <StatCard icon={CalendarDays} title="Uploaded This Week" value={5} />
+          <StatCard
+            icon={CalendarDays}
+            title="Uploaded This Week"
+            value={uploadedThisWeek}
+          />
         </div>
       </section>
-      <PlaceDialog isEdit={false} />
+      <PlaceDialog
+        isEdit={false}
+        isOpen={open}
+        setIsOpen={setOpen}
+        handleClose={handleClose}
+        handleSubmit={handleSubmitNewPlace}
+      />
     </>
   );
 }

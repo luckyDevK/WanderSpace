@@ -20,7 +20,7 @@ const useAxiosPrivate = (): AxiosInstance => {
     const reqIntercept = axiosPrivate.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         if (!config.headers['Authorization']) {
-          config.headers['Authorization'] = `Bearer ${token} `;
+          config.headers['Authorization'] = `Bearer ${token}`;
         }
 
         return config;
