@@ -1,20 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 import { AdminContext } from '@/hooks/useAdmin';
 import { useAuth } from '@/hooks/useAuth';
 import { getMyUser } from '@/lib/api/admin';
-import type { IPlaceUser } from '@/types/ImageType';
-
-interface AdminContextValue {
-  totalUploads: number;
-  mostRecentUpload: string;
-  uploadedThisWeek: number;
-  userPlaces: IPlaceUser[];
-  isLoading: boolean;
-}
+import type { IDataUser } from '@/lib/api/admin';
 
 export default function AdminProvider({
   children,
@@ -25,8 +17,11 @@ export default function AdminProvider({
 
   const { token } = useAuth() || {};
   const { data: userData, isLoading } = useQuery({
-    queryKey: ['myPlace'],
-    queryFn: ({ signal }) => getMyUser(axiosPrivate, signal),
+    queryKey: ['userPlaces', token],
+    queryFn: ({ signal }) => {
+      if (!token) throw new Error('No token');
+      return getMyUser(axiosPrivate, signal);
+    },
     enabled: !!token,
   });
 
@@ -36,10 +31,10 @@ export default function AdminProvider({
 
   const userId = userData?.user._id;
 
-  const places = useMemo(() => userData?.places ?? [], [userData?.places]);
+  const places = userData?.places ?? [];
 
   const totalUploads = places.filter(
-    (place) => place.createdBy.userId === userId,
+    (place) => place.createdBy._id === userId,
   ).length;
 
   const userCreatedAt = places.map((place) => place.createdAt);
@@ -71,12 +66,12 @@ export default function AdminProvider({
   const mostRecentUpload = getMostRecentDate(isoStrings);
   const uploadedThisWeek = countInThisWeek(userCreatedAt);
 
-  const ctxAdminValues: AdminContextValue = useMemo(
+  const ctxAdminValues = useMemo(
     () => ({
       totalUploads,
       mostRecentUpload,
       uploadedThisWeek,
-      userPlaces: places,
+      userData,
       isLoading,
     }),
     [isLoading, places, totalUploads, mostRecentUpload, uploadedThisWeek],

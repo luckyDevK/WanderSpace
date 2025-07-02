@@ -6,7 +6,7 @@ interface IUser {
   username: string;
 }
 
-interface IDataUser {
+export interface IDataUser {
   message: string;
   user: IUser;
   places: IPlaceUser[];

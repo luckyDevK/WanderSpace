@@ -7,7 +7,7 @@ export default function PreviousBtn() {
 
   return (
     <Button
-      onClick={() => navigate(-1)}
+      onClick={() => navigate('/')}
       variant="ghost"
       className="mt-5 ml-8 cursor-pointer border-2 border-slate-600"
     >

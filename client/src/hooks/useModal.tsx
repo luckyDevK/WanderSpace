@@ -1,40 +1,24 @@
-import type { NewPlaceType } from '@/components/admin/NewPlaceDialog';
+import type { IPlaceUser } from '@/types/ImageType';
 import { createContext, useContext } from 'react';
 
-// const [open, setOpen] = useState(false);
-// const axiosPrivate = useAxiosPrivate();
+import type { ModalType } from '@/types/PlaceDialogType';
 
-// if (isLoading) {
-//   return <Spinner />;
-// }
+type S = Omit<IPlaceUser, 'createdBy' | 'createdAt'>;
 
-// function handleClose() {
-//   setOpen(false);
-// }
-
-// async function handleSubmit(
-//   data: NewPlaceType,
-//   isValid: boolean,
-//   isSubmitSuccessful: boolean,
-// ) {
-//   if (isValid && isSubmitSuccessful) {
-//     await axiosPrivate.post('/place/create', data);
-
-//     setOpen(false);
-//   }
-// }
+type PlaceType = Omit<S, '_id'> & Partial<Pick<S, '_id'>>;
+export type IEditedPlace = PlaceType | null;
 
 export interface IModalContext {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  open: ModalType;
+  idPlaceToDelete: string | null;
+  setIdPlaceToDelete: React.Dispatch<React.SetStateAction<string | null>>;
+  editedPlace: IEditedPlace;
+  setEditedPlace: React.Dispatch<IEditedPlace>;
+  setOpen: React.Dispatch<React.SetStateAction<ModalType>>;
   handleClose: () => void;
-  handleSubmitNewPlace: (data: NewPlaceType, isValid: boolean) => void;
-
-  handleSubmitNewChanges: (
-    data: NewPlaceType,
-    isValid: boolean,
-    userId?: string,
-  ) => void;
+  handleSubmitNewPlace: (data: PlaceType, isValid: boolean) => void;
+  handleSubmitNewChanges: (data: PlaceType, isValid: boolean) => void;
+  handleDeletePlace: () => void;
 }
 
 export const ModalContext = createContext<IModalContext | null>(null);

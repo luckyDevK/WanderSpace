@@ -30,3 +30,22 @@ export const downloadImg = async (
     console.error('Download failed:', error);
   }
 };
+
+interface ApiRes<T> {
+  success: boolean;
+  message?: string;
+  data: T;
+}
+
+export async function handleRequest<T>(
+  requestFn: () => Promise<{ data: ApiRes<T> }>,
+): Promise<T> {
+  const { data } = await requestFn();
+
+  if (!data.success) throw new Error(data.message);
+
+  console.log(data);
+  const { success, message, ...rest } = data;
+
+  return rest as T;
+}

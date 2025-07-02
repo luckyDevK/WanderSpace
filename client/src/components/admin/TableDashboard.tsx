@@ -15,7 +15,8 @@ import type { RowData } from '@/types/ImageType';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function TableDashboard() {
-  const { userPlaces, isLoading } = useAdmin();
+  const { userData, isLoading } = useAdmin();
+  const userPlaces = userData?.places;
 
   const rowData: RowData[] = useMemo(
     () => (userPlaces ?? []).map((place, idx) => ({ ...place, no: idx + 1 })),
@@ -73,7 +74,7 @@ export default function TableDashboard() {
         rowData={rowData}
         columnDefs={colDefs}
         pagination
-        paginationPageSize={10}
+        paginationPageSize={20}
         domLayout="autoHeight"
         suppressCellFocus
         animateRows

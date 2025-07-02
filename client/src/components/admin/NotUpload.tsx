@@ -4,11 +4,12 @@ import PlaceDialog from './NewPlaceDialog';
 import Spinner from '../customized/spinner/spinner-08';
 import { Button } from '../ui/button';
 import { useAdmin } from '@/hooks/useAdmin';
-import { useState } from 'react';
+
+import useModal from '@/hooks/useModal';
 
 export default function NotUpload() {
   const { userPlace, isLoading } = useAdmin();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen, handleClose, handleSubmitNewPlace } = useModal();
 
   if (isLoading) {
     return <Spinner />;
@@ -24,7 +25,20 @@ export default function NotUpload() {
           place!
         </p>
       </div>
-      <PlaceDialog isOpen={open} setIsOpen={setOpen} isEdit={false} />
+      <Button
+        onClick={() => setOpen('create')}
+        className="md:mr-8 cursor-pointer"
+      >
+        Add New Files
+      </Button>
+
+      <PlaceDialog
+        isOpen={open === 'create'}
+        setIsOpen={(val) => setOpen(val ? 'create' : '')}
+        isEdit={false}
+        handleClose={handleClose}
+        handleSubmit={handleSubmitNewPlace}
+      />
     </div>
   );
 }

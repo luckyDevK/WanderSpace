@@ -35,6 +35,8 @@ export default function PlaceContextProvider({
   const isLoading = q ? isSearchLoading : isPaginatedLoading;
   const totalPages = paginatedData?.totalPages ?? 0;
 
+  console.log(places);
+
   function handleNavigate(page: number) {
     setPage(page);
   }

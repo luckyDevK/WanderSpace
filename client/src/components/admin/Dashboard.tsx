@@ -1,10 +1,11 @@
-import { Clock, UploadCloud, CalendarDays } from 'lucide-react';
-import { useState } from 'react';
+import { Clock, UploadCloud, CalendarDays, Plus } from 'lucide-react';
 
+import { Button } from '../ui/button';
 import Spinner from '../customized/spinner/spinner-08';
 import PlaceDialog from './NewPlaceDialog';
 import { useAdmin } from '@/hooks/useAdmin';
 import useModal from '@/hooks/useModal';
+import AlertDialogDelete from './AlertDialogDelete';
 
 function StatCard({
   icon: Icon,
@@ -28,7 +29,14 @@ export default function Dashboard() {
   const { totalUploads, mostRecentUpload, uploadedThisWeek, isLoading } =
     useAdmin();
 
-  const { handleSubmitNewPlace, handleClose, open, setOpen } = useModal();
+  const {
+    handleSubmitNewPlace,
+    handleSubmitNewChanges,
+    handleClose,
+    setOpen,
+    open,
+    editedPlace,
+  } = useModal();
 
   if (isLoading) {
     return <Spinner />;
@@ -55,12 +63,36 @@ export default function Dashboard() {
           />
         </div>
       </section>
+      <Button
+        className="mt-5 cursor-pointer border-2 border-slate-700"
+        variant="outline"
+        onClick={() => setOpen('create')}
+      >
+        <Plus strokeWidth={3} /> Add New Place
+      </Button>
+
       <PlaceDialog
         isEdit={false}
-        isOpen={open}
-        setIsOpen={setOpen}
+        isOpen={open === 'create'}
+        setIsOpen={(val) => setOpen(val ? 'create' : '')}
         handleClose={handleClose}
         handleSubmit={handleSubmitNewPlace}
+      />
+
+      <PlaceDialog
+        isEdit={true}
+        isOpen={open === 'edit'}
+        setIsOpen={(val) => setOpen(val ? 'edit' : '')}
+        handleClose={handleClose}
+        handleSubmit={handleSubmitNewChanges}
+        initialValues={editedPlace ?? undefined}
+      />
+
+      <AlertDialogDelete
+        isOpen={open === 'delete'}
+        setIsOpen={(val) => setOpen(val ? 'delete' : '')}
+        alertTitle="Are you absolutely sure?"
+        alertDesc="This action cannot be undone. This will permanently delete the selected place."
       />
     </>
   );

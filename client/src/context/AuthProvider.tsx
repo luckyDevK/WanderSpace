@@ -5,6 +5,7 @@ import { isAxiosError } from 'axios';
 import axios from '@/lib/api/axios';
 import type { ISignIn, ISignUp } from '../hooks/useAuth';
 import { AuthContext } from '../hooks/useAuth';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function AuthContextProvider({
   children,
@@ -12,6 +13,7 @@ export default function AuthContextProvider({
   children: React.ReactNode;
 }) {
   const [token, setToken] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
@@ -30,17 +32,18 @@ export default function AuthContextProvider({
 
       if (data.message === 'success') {
         setToken(accessToken);
-
+        console.log(data);
         navigate('/');
       }
     } catch (error) {
-      if (isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          alert(error.response.data.message || 'Unauthorized');
-        } else {
-          alert('Something went wrong');
-        }
-      }
+      console.error(error);
+      // if (isAxiosError(error)) {
+      //   if (error.response?.status === 401) {
+      //     alert(error.response.data.message || 'Unauthorized');
+      //   } else {
+      //     alert('Something went wrong');
+      //   }
+      // }
     }
   };
 
@@ -75,26 +78,24 @@ export default function AuthContextProvider({
         {},
         { withCredentials: true },
       );
+      navigate('/');
 
-      if (res.status === 200 || res.status === 204) {
-        setToken(null);
-      }
+      console.log(res, 'loigout');
+
+      queryClient.removeQueries({ queryKey: ['userPlaces'] });
+      setToken(null);
     } catch (error) {
       console.error('Logout failed:', error);
     }
   };
 
-  const ctxAuthValues = useMemo(
-    () => ({
-      token,
-      setToken,
-
-      handleSignIn,
-      handleSignUp,
-      handleSignOut,
-    }),
-    [token],
-  );
+  const ctxAuthValues = {
+    token,
+    setToken,
+    handleSignIn,
+    handleSignUp,
+    handleSignOut,
+  };
 
   return <AuthContext value={ctxAuthValues}>{children}</AuthContext>;
 }

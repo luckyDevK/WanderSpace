@@ -1,11 +1,11 @@
-import type { IPlaceUser } from '@/types/ImageType';
+import type { IDataUser } from '@/lib/api/admin';
 import { createContext, useContext } from 'react';
 
 interface IAdminContext {
   totalUploads: number;
   mostRecentUpload: string;
   uploadedThisWeek: number;
-  userPlaces: IPlaceUser[];
+  userData: IDataUser | undefined;
   isLoading: boolean;
 }
 

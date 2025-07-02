@@ -13,15 +13,15 @@ export default function ImageFooter({
   imageUrl,
 }: ImageFooterProps) {
   return (
-    <div className="mt-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div>
+    <div className="mt-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4 w-full">
+      <div className="flex-1 min-w-0">
         <DialogTitle className="text-2xl font-bold text-foreground">
           {title}
         </DialogTitle>
-        <p className="text-muted-foreground mt-1 text-balance">{description}</p>
+        <p className="text-muted-foreground mt-1 break-words">{description}</p>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex-shrink-0 flex gap-3">
         <Button
           onClick={() => downloadImg(imageUrl, `${title}.jpg`)}
           className="bg-emerald-500 text-white hover:bg-emerald-500/80 transition-colors duration-200 ease-in cursor-pointer"

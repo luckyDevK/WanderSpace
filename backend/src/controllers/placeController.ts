@@ -62,7 +62,11 @@ export const createPlace = async (
     '-__v -updatedAt',
   );
 
-  return res.status(201).json({ message: 'success', place: populatedPlace });
+  console.log(populatedPlace, 'wwww');
+
+  return res
+    .status(201)
+    .json({ message: 'success', place: populatedPlace, success: true });
 };
 
 export const updatePlace = async (
@@ -72,8 +76,8 @@ export const updatePlace = async (
 ): Promise<void> => {
   const updates = matchedData(req) as UpdatePlaceInput;
 
-  console.log(req.params.id);
   const id = decodeURIComponent(req.params.id);
+  console.log(id, 'updated id');
 
   const updated = await Place.findByIdAndUpdate(id, updates, {
     new: true,
@@ -81,13 +85,14 @@ export const updatePlace = async (
   }).select('-__v -updatedAt');
 
   if (!updated) {
-    res.status(404).json({ message: 'Place not found' });
+    res.status(404).json({ message: 'Place not found', success: false });
     return;
   }
 
   res.status(200).json({
     message: 'success',
     place: updated,
+    success: true,
   });
   return;
 };
@@ -102,11 +107,15 @@ export const deletePlace = async (
   const deleted = await Place.findByIdAndDelete(placeId);
 
   if (!deleted) {
-    res.status(404).json({ message: 'Place not found' });
+    res.status(404).json({ message: 'Place not found', success: false });
     return;
   }
 
-  res.status(200).json({ message: 'Place deleted successfully' });
+  res.status(200).json({
+    message: 'Place deleted successfully',
+    success: true,
+    place: deleted,
+  });
   return;
 };
 

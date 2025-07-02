@@ -11,10 +11,8 @@ import { useAuth } from './useAuth';
 import { axiosPrivate } from '@/lib/api/axios';
 
 const useAxiosPrivate = (): AxiosInstance => {
-  const auth = useAuth();
+  const { token } = useAuth() || {};
   const refresh = useRefreshToken();
-
-  const token = auth?.token;
 
   useEffect(() => {
     const reqIntercept = axiosPrivate.interceptors.request.use(
@@ -35,7 +33,7 @@ const useAxiosPrivate = (): AxiosInstance => {
       async (err: AxiosError) => {
         const prevReq = err?.config;
 
-        console.log(err.config, 'config');
+        console.log(err, 'config');
         if (err.response?.status === 403 && prevReq) {
           const newAccessToken = await refresh();
           prevReq.headers['Authorization'] = `Bearer ${newAccessToken}`;

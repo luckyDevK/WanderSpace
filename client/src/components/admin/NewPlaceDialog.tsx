@@ -5,7 +5,6 @@ import * as z from 'zod/v4';
 
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -39,7 +38,6 @@ export default function PlaceDialog({
   isOpen,
   setIsOpen,
   handleClose,
-  IconTrigger,
   handleSubmit: submitData,
 }: PlaceDialogProps) {
   const {
@@ -52,8 +50,6 @@ export default function PlaceDialog({
     resolver: zodResolver(NewPlaceSchema),
     defaultValues: initialValues,
   });
-
-  console.log(initialValues, 'vaiIn');
 
   useEffect(() => {
     if (initialValues) {
@@ -70,12 +66,7 @@ export default function PlaceDialog({
   const customFormHandler = handleSubmit((data) => submitData(data, isValid));
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="ghost" className="mt-10 border-2 border-slate-600">
-          {isEdit ? <IconTrigger strokeWidth={4} /> : 'Create your first place'}
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
       <DialogContent className="md:max-w-md [&>button]:hidden">
         <form onSubmit={customFormHandler}>
           <DialogHeader>

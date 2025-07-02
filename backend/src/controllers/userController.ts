@@ -18,7 +18,9 @@ export const getCurrentUserController = async (
       return;
     }
 
-    const userPlaces = await Place.find({ createdBy: userId }).select('-__v');
+    const userPlaces = await Place.find({ createdBy: userId })
+      .select('-__v')
+      .populate('createdBy', 'username');
 
     res.status(200).json({ success: true, user, places: userPlaces });
   } catch (err) {

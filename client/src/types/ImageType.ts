@@ -8,7 +8,7 @@ export interface IPlaceUser {
   location: string;
   category: CategoryType;
   createdBy: {
-    userId: string;
+    _id: string;
     username: string;
   };
   createdAt: Date;
