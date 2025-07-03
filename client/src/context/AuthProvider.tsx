@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { isAxiosError } from 'axios';
 import axios from '@/lib/api/axios';
 import type { ISignIn, ISignUp } from '../hooks/useAuth';
 import { AuthContext } from '../hooks/useAuth';
@@ -37,13 +36,6 @@ export default function AuthContextProvider({
       }
     } catch (error) {
       console.error(error);
-      // if (isAxiosError(error)) {
-      //   if (error.response?.status === 401) {
-      //     alert(error.response.data.message || 'Unauthorized');
-      //   } else {
-      //     alert('Something went wrong');
-      //   }
-      // }
     }
   };
 
@@ -79,8 +71,6 @@ export default function AuthContextProvider({
         { withCredentials: true },
       );
       navigate('/');
-
-      console.log(res, 'loigout');
 
       queryClient.removeQueries({ queryKey: ['userPlaces'] });
       setToken(null);

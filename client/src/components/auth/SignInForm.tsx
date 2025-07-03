@@ -32,10 +32,15 @@ export default function SignInForm({
     formState: { errors },
   } = useForm<SignInForm>({ resolver: zodResolver(SignInSchema) });
 
-  const { handleSignIn } = useAuth();
+  const auth = useAuth();
+
+  const handleSignIn = auth?.handleSignIn;
 
   return (
-    <div className={cn(' flex flex-col gap-6', className)} {...props}>
+    <div
+      className={cn(' flex flex-col gap-6 w-[90%] mx-auto md:mx-0', className)}
+      {...props}
+    >
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -44,7 +49,13 @@ export default function SignInForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit((data) => handleSignIn(data))}>
+          <form
+            onSubmit={handleSubmit((data) => {
+              if (handleSignIn) {
+                handleSignIn(data);
+              }
+            })}
+          >
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="identifier">Email / Username</Label>

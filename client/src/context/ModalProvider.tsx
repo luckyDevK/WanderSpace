@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 import type { NewPlaceType } from '@/components/admin/NewPlaceDialog';
 import { ModalContext } from '@/hooks/useModal';
@@ -31,10 +30,6 @@ export default function ModalContextProvider({
   function handleClose() {
     setOpen('');
   }
-
-  useEffect(() => {
-    console.log(editedPlace?._id);
-  }, [editedPlace]);
 
   async function createPlace(data: NewPlaceType) {
     return handleRequest<IResPlace['place']>(() =>

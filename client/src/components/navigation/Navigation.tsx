@@ -1,5 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Home, LayoutDashboard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   DropdownMenu,
@@ -9,14 +10,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import NavigationMenuWithActiveItem from './NavMenu';
-import { useLocation } from 'react-router-dom';
-import { Home, LayoutDashboard } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function Navigation() {
-  const { token, handleSignOut } = useAuth();
+  const { token, handleSignOut } = useAuth() || {};
+  const navigate = useNavigate();
 
   const navigationMenuItems = [
     { title: 'Home', href: '/', icon: Home, isRender: true },
@@ -50,7 +51,7 @@ export default function Navigation() {
         <Button
           onClick={handleSignOut}
           variant="secondary"
-          className="cursor-pointer"
+          className="cursor-pointer hidden md:block"
         >
           Sign Out
         </Button>
@@ -64,10 +65,48 @@ export default function Navigation() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem className="py-2">Home</DropdownMenuItem>
-            <DropdownMenuItem className="py-2">Admin</DropdownMenuItem>
-            <DropdownMenuItem className="py-2">Sign In</DropdownMenuItem>
-            <DropdownMenuItem className="py-2">Sign Up</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate('/')} className="py-2">
+              Home
+            </DropdownMenuItem>
+            {token && (
+              <DropdownMenuItem
+                onClick={() => navigate('/dashboard')}
+                className="py-2"
+              >
+                Admin
+              </DropdownMenuItem>
+            )}
+            <div className="flex gap-2 my-2 mx-1">
+              {token ? (
+                <>
+                  <DropdownMenuItem className="" asChild>
+                    <Button onClick={handleSignOut} className="flex-1">
+                      Logout
+                    </Button>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem className="" asChild>
+                    <Button
+                      onClick={() => navigate('/signin')}
+                      className="flex-1"
+                    >
+                      Sign in
+                    </Button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="" asChild>
+                    <Button
+                      onClick={() => navigate('/signup')}
+                      className="flex-1"
+                      variant="outline"
+                    >
+                      Sign up
+                    </Button>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

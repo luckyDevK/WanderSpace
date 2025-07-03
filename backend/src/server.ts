@@ -19,12 +19,10 @@ const run = async () => {
     await mongoose.connect(MONGO_URI);
     console.log('✅ Connected to MongoDB');
 
-    // 🔁 Seeding logic goes here
     const userId = await seedDefaultUser();
     await seedBeautifulPlaces(userId);
     console.log('🌱 Seed completed');
 
-    // Start the app after DB + seeding
     app.listen(PORT, () => {
       console.log(`🚀 Server listening at http://localhost:${PORT}`);
     });

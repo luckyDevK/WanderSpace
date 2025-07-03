@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import useAxiosPrivate from '@/hooks/useAxiosPrivate';
 import { AdminContext } from '@/hooks/useAdmin';
 import { useAuth } from '@/hooks/useAuth';
 import { getMyUser } from '@/lib/api/admin';
-import type { IDataUser } from '@/lib/api/admin';
 
 export default function AdminProvider({
   children,

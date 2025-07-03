@@ -11,7 +11,7 @@ export const authMiddleware = (
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.json({ message: 'Invalid kontol ' });
+    res.json({ message: 'Invalid credentials ' });
     return;
   }
 

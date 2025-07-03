@@ -33,12 +33,18 @@ export default function SignUpForm({
     resolver: zodResolver(SignUpSchema),
   });
 
-  const { handleSignUp } = useAuth();
+  const auth = useAuth();
 
-  console.log(errors);
+  const handleSignUp = auth?.handleSignUp;
 
   return (
-    <div className={cn(' flex flex-col gap-6', className)} {...props}>
+    <div
+      className={cn(
+        ' flex flex-col gap-6 md:w-full w-[90%] mx-auto md:mx-0',
+        className,
+      )}
+      {...props}
+    >
       <Card>
         <CardHeader>
           <CardTitle>Register to your first account</CardTitle>
@@ -47,7 +53,13 @@ export default function SignUpForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit((data) => handleSignUp(data))}>
+          <form
+            onSubmit={handleSubmit((data) => {
+              if (handleSignUp) {
+                handleSignUp(data);
+              }
+            })}
+          >
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="username">Username</Label>
