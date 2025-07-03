@@ -65,11 +65,7 @@ export default function AuthContextProvider({
 
   const handleSignOut = async () => {
     try {
-      const res = await axios.post(
-        '/auth/logout',
-        {},
-        { withCredentials: true },
-      );
+      await axios.post('/auth/logout', {}, { withCredentials: true });
       navigate('/');
 
       queryClient.removeQueries({ queryKey: ['userPlaces'] });

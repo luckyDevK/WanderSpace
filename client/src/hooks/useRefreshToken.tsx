@@ -19,7 +19,6 @@ export const useRefreshToken = (): (() => Promise<string | null>) => {
       return data.accessToken;
     } catch (err: any) {
       if (err?.response?.status === 401) {
-        // optional: clear token here if needed
         return null;
       }
 

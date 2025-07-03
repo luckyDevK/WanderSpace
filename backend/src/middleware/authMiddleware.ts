@@ -28,7 +28,6 @@ export const authMiddleware = (
     if (err) return res.status(403).json({ message: 'Forbidden' });
 
     if (typeof decoded === 'object') {
-      console.log(decoded?.userId, 'wwsm');
       req.userId = decoded?.userId;
       req.identifier = decoded?.identifier;
       next();

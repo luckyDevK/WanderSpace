@@ -107,7 +107,7 @@ export const refresh = (
   jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET!,
-    (err, decoded) => {
+    (err: VerifyErrors | null, decoded: JwtPayload | string | undefined) => {
       if (err || typeof decoded !== 'object') {
         return res.status(403).json({ message: 'Forbidden' });
       }

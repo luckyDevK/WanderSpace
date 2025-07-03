@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
@@ -13,6 +14,7 @@ app.use(cookieParser());
 app.use(json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(helmet());
 app.use(
   cors({
     origin: 'http://localhost:5173',
