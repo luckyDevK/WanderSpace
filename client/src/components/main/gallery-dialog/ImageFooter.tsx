@@ -1,11 +1,11 @@
 import { DialogTitle } from '@radix-ui/react-dialog';
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 import { Button } from '@/components/ui/button';
 import { Download, Share2 } from 'lucide-react';
 
 import { downloadImg } from '@/lib/utils';
 
-type ImageFooterProps = Pick<IImage, 'title' | 'description' | 'imageUrl'>;
+type ImageFooterProps = Pick<IPlaceUser, 'title' | 'description' | 'imageUrl'>;
 
 export default function ImageFooter({
   title,

@@ -1,7 +1,7 @@
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 import { Avatar, AvatarImage, AvatarFallback } from '../../ui/avatar';
 
-type ImageMeta = Pick<IImage, 'category' | 'location' | 'createdBy'>;
+type ImageMeta = Pick<IPlaceUser, 'category' | 'location' | 'createdBy'>;
 
 export default function ImageMeta({
   category,

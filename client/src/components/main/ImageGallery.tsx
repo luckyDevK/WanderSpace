@@ -1,7 +1,7 @@
 import { usePlacesContext } from '@/hooks/usePlaceContext';
 
 import { DialogGallery } from './gallery-dialog/DialogGallery';
-import ImageWrapper from './ImageWrapper';
+
 import Spinner from '../customized/spinner/spinner-08';
 
 import PaginationTabs from './Pagination';

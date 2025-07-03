@@ -1,8 +1,7 @@
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 import { downloadImg } from '@/lib/utils';
-import { Button } from '../ui/button';
 
-type ImageContentProps = Pick<IImage, 'imageUrl' | 'title'>;
+type ImageContentProps = Pick<IPlaceUser, 'imageUrl' | 'title'>;
 
 type ImageWrapperProps = ImageContentProps;
 

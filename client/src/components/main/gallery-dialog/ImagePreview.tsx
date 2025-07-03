@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 
-import type { IImage } from '@/types/ImageType';
+import type { IPlaceUser } from '@/types/ImageType';
 
-type ImagePreviewProps = Pick<IImage, 'imageUrl' | 'title'>;
+type ImagePreviewProps = Pick<IPlaceUser, 'imageUrl' | 'title'>;
 
 export default function ImagePreview({ imageUrl, title }: ImagePreviewProps) {
   const imgRef = useRef<HTMLImageElement | null>(null);

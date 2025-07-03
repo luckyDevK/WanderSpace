@@ -1,5 +1,5 @@
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
-import type { IImage } from '../../../types/ImageType';
+import type { IPlaceUser } from '../../../types/ImageType';
 import ImageMeta from './ImageMeta';
 import ImagePreview from './ImagePreview';
 import ImageFooter from './ImageFooter';
@@ -12,7 +12,7 @@ export function DialogGallery({
   description,
   createdBy,
   category,
-}: Omit<IImage, '_id' | 'createdAt'>) {
+}: Omit<IPlaceUser, '_id' | 'createdAt'>) {
   return (
     <Dialog>
       <DialogTrigger>

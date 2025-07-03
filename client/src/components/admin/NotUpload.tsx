@@ -8,7 +8,7 @@ import { useAdmin } from '@/hooks/useAdmin';
 import useModal from '@/hooks/useModal';
 
 export default function NotUpload() {
-  const { userPlace, isLoading } = useAdmin();
+  const { isLoading } = useAdmin();
   const { open, setOpen, handleClose, handleSubmitNewPlace } = useModal();
 
   if (isLoading) {
