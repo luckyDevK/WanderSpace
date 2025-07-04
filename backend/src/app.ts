@@ -22,6 +22,11 @@ app.use(
   }),
 );
 
+app.use((req, res, next) => {
+  console.log('Origin:', req.headers.origin);
+  next();
+});
+
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/place', placeRoutes);
