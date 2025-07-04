@@ -23,7 +23,7 @@ app.use(
 );
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({ message: 'success' });
+  res.status(200).json({ message: 'wwww' });
 });
 
 app.use('/users', userRoutes);
