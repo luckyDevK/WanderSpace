@@ -22,10 +22,6 @@ app.use(
   }),
 );
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  res.status(200).json({ message: 'wwww' });
-});
-
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/place', placeRoutes);
