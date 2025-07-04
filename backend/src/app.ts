@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, { json } from 'express';
+import express, { json, NextFunction, Response, Request } from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
@@ -21,6 +21,10 @@ app.use(
     credentials: true,
   }),
 );
+
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({ message: 'success' });
+});
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
