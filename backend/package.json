@@ -1,10 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "A Node.js + Express API using TypeScript",
-  "main": "dist/server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --watch src --ext 'src/**/*.ts' --exec tsx src/server.ts",
     "start": "node dist/server.js",
     "build": "rimraf dist && tsc",
     "type-check": "tsc --noEmit",
@@ -12,12 +12,7 @@
     "pre-commit": "npm run build && git add dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "node",
-    "express",
-    "typescript",
-    "api"
-  ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
