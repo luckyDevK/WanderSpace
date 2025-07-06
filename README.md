@@ -1,26 +1,36 @@
-# WanderSpace 🌍✨
+# 🌌 WanderSpace
 
-**WanderSpace** is a full-stack web application where users can explore and share visually stunning places. Inspired by platforms like Unsplash, WanderSpace allows users not only to view and download beautiful location photos, but also to contribute their own. It's a space to appreciate the world's beauty, powered by modern web technologies.
+WanderSpace is a fullstack image discovery and download platform inspired by Unsplash. Users can browse stunning images, view them fullscreen, and download freely. Built with modern technologies, it features smooth UX, secure authentication, and scalable backend services.
 
----
+## ✨ Features
 
-## 🚀 Features
+- 🔍 Explore and view high-quality images
+- ⬇️ Download images instantly
+- 🖼️ Fullscreen image view with smooth transitions
+- 🔐 User authentication with JWT
+- 🗃️ Paginated image feeds using React Query
+- 📦 Form validation using Zod + React Hook Form
 
-- 🔐 User authentication with **JWT**
-- 📸 Upload and explore beautiful places
-- 🌐 RESTful **API endpoints**
-- 💾 Persistent storage using MongoDB
-- 🧭 Built with the **MERN stack** (MongoDB, Express, React, Node.js)
+## 🖥️ Frontend
 
----
+- ⚛️ [React](https://reactjs.org/)
+- ⚡ [TypeScript](https://www.typescriptlang.org/)
+- 💨 [Tailwind CSS](https://tailwindcss.com/)
+- 📜 [Zod](https://zod.dev/) + [React Hook Form](https://react-hook-form.com/)
+- 🔁 [React Router](https://reactrouter.com/)
+- ⚡ [React Query](https://tanstack.com/query/latest)
 
-## 🛠 Tech Stack
+## 🛠️ Backend
 
-- **Frontend**: React, Vite, TailwindCSS (if used)
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **Authentication**: JWT (JSON Web Token)
-- **State Management**: React Context / Local state (assumed)
-- **Deployment**: (You can mention Render, Vercel, or Netlify if used)
+- 🚀 [Node.js](https://nodejs.org/)
+- 🌐 [Express](https://expressjs.com/)
+- 🍃 [MongoDB](https://www.mongodb.com/)
+- 🔐 JWT-based authentication
+- 🛡️ CORS, Helmet, and validation middleware
 
----
+## 🌍 Live Demo
+
+**Frontend**: [https://wander-space-client.vercel.app](https://wander-space-client.vercel.app) 
+
+
+
