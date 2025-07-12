@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRefreshToken } from '@/hooks/useRefreshToken';
 import { useAuth } from '@/hooks/useAuth';
 import { Outlet } from 'react-router-dom';
-import SpinnerCircle2 from '../customized/spinner/spinner-08';
+import Spinner from '../customized/spinner/spinner-08';
 
 export default function PersistLogin() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +31,13 @@ export default function PersistLogin() {
     }
   }, []);
 
-  if (isLoading) return <SpinnerCircle2 />;
+  if (isLoading) {
+    return (
+      <div className=" h-[60vh] col-span-3 flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   return <Outlet />;
 }
