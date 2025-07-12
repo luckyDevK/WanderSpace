@@ -19,7 +19,7 @@ export function DialogGallery({
         <ImageWrapper imageUrl={imageUrl} title={title} />
       </DialogTrigger>
 
-      <DialogContent className="max-w-xl w-[90%] bg-white p-6 rounded-xl [&>button]:hidden">
+      <DialogContent className="max-w-96 w-[90%] bg-white p-6 rounded-xl [&>button]:hidden">
         <ImageMeta
           category={category}
           createdBy={createdBy}
