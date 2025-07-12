@@ -8,7 +8,11 @@ export default function DashboardPage() {
   const { userData, isLoading } = useAdmin();
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div className=" h-[60vh] col-span-3 flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
   }
 
   return (
